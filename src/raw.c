@@ -4,6 +4,7 @@
 
 // Copyright 2016, Heckendorf.  All rights reserved.
 
+#include "lldb/lldbcwrap.h"
 #include "lldbr.h"
 
 SEXP load_process(SEXP R_args)
@@ -12,6 +13,7 @@ SEXP load_process(SEXP R_args)
 	SEXP RET;
 	char *exename = CHARPT(R_args, 0);
 	int x[50];
+	int i;
 
 	struct lldbcdata cdata;
 

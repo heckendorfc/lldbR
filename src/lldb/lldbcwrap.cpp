@@ -26,7 +26,7 @@ class LLDBSentry
 };
 
 #define convlang(class,elem) if(c->elem) cpp->elem = static_cast<class*>(c->elem)
-void convertstruct(struct lldbcdata *c, struct lldbcppdata *cpp){
+static void convertstruct(struct lldbcdata *c, struct lldbcppdata *cpp){
 	convlang(SBDebugger,debugger);
 	convlang(SBTarget,target);
 	convlang(SBProcess,process);
