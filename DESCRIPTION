@@ -1,0 +1,13 @@
+Package: lldbR
+Type: Package
+Title: LLDB API R wrapper
+Version: 1.0
+Date: 2016-08-09
+Author: Christian Heckendorf (heckendorfc@gmail.com)
+Maintainer: Christian Heckendorf <heckendorfc@gmail.com>
+Description: This package provides access to the LLDB API from within R
+License: BSD 2-clause License + file LICENSE
+LazyData: yes
+ByteCompile: yes
+NeedsCompilation: yes
+RoxygenNote: 5.0.1
