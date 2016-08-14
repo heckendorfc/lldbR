@@ -1,6 +1,6 @@
 # lldbR
 
-Functions to access the LLDB API
+Functions to access the LLDB API so R can be used as a debugger interface.
 
 ```r
 library(lldbR)
