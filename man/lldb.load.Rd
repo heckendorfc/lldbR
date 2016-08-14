@@ -7,7 +7,7 @@
 lldb.load(args)
 }
 \arguments{
-\item{args}{TODO}
+\item{process}{process name}
 }
 \description{
 lldb.load

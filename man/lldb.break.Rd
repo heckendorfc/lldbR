@@ -4,10 +4,14 @@
 \alias{lldb.break}
 \title{lldb.break}
 \usage{
-lldb.break(args)
+lldb.break(handle, file, line)
 }
 \arguments{
-\item{args}{TODO}
+\item{handle}{handle returned from lldb.load}
+
+\item{file}{source file to break in}
+
+\item{line}{line number to break at}
 }
 \description{
 lldb.break
