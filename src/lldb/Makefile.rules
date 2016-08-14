@@ -410,6 +410,7 @@ ifneq "$(strip $(ARCHIVE_CXX_SOURCES))" ""
 	ARCHIVE_OBJECTS +=$(strip $(ARCHIVE_CXX_SOURCES:.cpp=.o))
 	CXX = $(call cxx_compiler,$(CC))
 	LD = $(call cxx_linker,$(CC))
+    CXXFLAGS += -fPIC
 endif
 
 #----------------------------------------------------------------------
@@ -472,6 +473,7 @@ endif
 #----------------------------------------------------------------------
 # Compile the executable from all the objects.
 #----------------------------------------------------------------------
+ifneq "$(MAKE_EXE)" "no"
 ifneq "$(DYLIB_NAME)" ""
 ifeq "$(DYLIB_ONLY)" ""
 $(EXE) : $(OBJECTS) $(ARCHIVE_NAME) $(DYLIB_FILENAME)
@@ -483,18 +485,19 @@ else
 $(EXE) : $(OBJECTS) $(ARCHIVE_NAME)
 	$(LD) $(OBJECTS) $(LDFLAGS) $(ARCHIVE_NAME) -o "$(EXE)"
 endif
+endif
 
 #----------------------------------------------------------------------
 # Make the archive
 #----------------------------------------------------------------------
 ifneq "$(ARCHIVE_NAME)" ""
-ifeq "$(OS)" "Darwin"
+#ifeq "$(OS)" "Darwin"
 $(ARCHIVE_NAME) : $(ARCHIVE_OBJECTS)
 	$(AR) $(ARFLAGS) $(ARCHIVE_NAME) $(ARCHIVE_OBJECTS)
 	$(RM) $(ARCHIVE_OBJECTS)
-else
-$(ARCHIVE_NAME) : $(foreach ar_obj,$(ARCHIVE_OBJECTS),$(ARCHIVE_NAME)($(ar_obj)))
-endif
+#else
+#$(ARCHIVE_NAME) : $(foreach ar_obj,$(ARCHIVE_OBJECTS),$(ARCHIVE_NAME)($(ar_obj)))
+#endif
 endif
 
 #----------------------------------------------------------------------

@@ -25,7 +25,7 @@
 
 AC_INIT(DESCRIPTION)
 
-LLDBR_LIBS="build/libs/libclldb.so"
+LLDBR_LIBS="-L/usr/local/lib -llldb"
 OBEXTRA="instclldb"
 
 AC_SUBST(LLDBR_LIBS)

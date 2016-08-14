@@ -5,7 +5,7 @@
 #' 
 #' @export
 lldb.load <- function(args){
-	.Call("load_process",package="lldbR",args);
+	.Call("R_load_process",args,package="lldbR");
 }
 
 #' lldb.break

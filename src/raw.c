@@ -6,14 +6,23 @@
 
 #include "lldb/lldbcwrap.h"
 #include "lldbr.h"
+#include "lldbtypes.h"
 
-SEXP load_process(SEXP R_args)
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+SEXP R_load_process(SEXP R_args)
 {
 	int retval;
 	SEXP RET;
 	char *exename = CHARPT(R_args, 0);
 	int x[50];
+	int *xp;
+	void *rawx;
+	int rawxsize;
 	int i;
+	int type;
 
 	struct lldbcdata cdata;
 
@@ -21,15 +30,15 @@ SEXP load_process(SEXP R_args)
 	initprocess(&cdata,exename);
 	setbreakpoint(&cdata,"test.c",10);
 	startprocess(&cdata,NULL);
-	getvalue(&cdata,0,"x",x,0,4,extract_array);
+	type = getvalue(&cdata,0,"x",&rawx,&rawxsize,2,4,extract_array);
 
-	PROTECT(RET = allocVector(INTSXP, 4));
-
-	for(i=0;i<4;i++)
-		INTEGER(RET)[i] = x[i];
-
-	UNPROTECT(1);
+	RET = make_r_type(rawx,rawxsize,type);
+	free(rawx);
 
 	return RET;
 }
+
+#ifdef __cplusplus
+}
+#endif
 

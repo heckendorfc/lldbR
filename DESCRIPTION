@@ -8,6 +8,7 @@ Maintainer: Christian Heckendorf <heckendorfc@gmail.com>
 Description: This package provides access to the LLDB API from within R
 License: BSD 2-clause License + file LICENSE
 LazyData: yes
+LazyLoad: yes
 ByteCompile: yes
 NeedsCompilation: yes
 RoxygenNote: 5.0.1

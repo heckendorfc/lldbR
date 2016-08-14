@@ -1,10 +1,11 @@
 #######################################################
 
-#PKG_CFLAGS = @LLDB_CFLAGS@
-#PKG_LIBS = @LLDB_LIBS@
+PKG_LIBS = @LLDBR_LIBS@
 OBEXTRA = @OBEXTRA@
 
-OBJECTS = raw.o
+LLDBOBJ = lldb/clldb.a
+ROBJ = raw.o lldbtypes.o
+OBJECTS = $(ROBJ) $(LLDBOBJ)
 
 all: $(SHLIB)
 
@@ -14,11 +15,9 @@ $(OBJECTS): $(OBEXTRA)
 
 
 mkclldb:
-	( mkdir -p build/libs; cd lldb; gmake BUILD_DIR=../build/libs)
+	( mkdir -p libs; cd lldb; gmake BUILD_DIR=../ LDB_LIBS=$(PKG_LIBS))
 
 instclldb: mkclldb
-	mkdir -p ../inst/libs
-	cp build/libs/* ../inst/libs/
 
 clean:
-	rm -rf ./build
+	rm -rf ./libs ./*.so ./*.o

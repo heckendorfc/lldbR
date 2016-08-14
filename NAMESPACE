@@ -3,3 +3,4 @@
 export(lldb.break)
 export(lldb.continue)
 export(lldb.load)
+useDynLib(lldbR, R_load_process)
