@@ -12,6 +12,8 @@
 extern "C" {
 #endif
 
+#define CHECKPTR(ptr) if(ptr==NULL)error("invalid handler; pointer is NULL")
+
 static void cdata_finalize(SEXP ptr){
 	int i;
 	struct lldbcdata *cdata;
@@ -65,6 +67,7 @@ SEXP R_run_process(SEXP R_cdata, SEXP R_argv, SEXP R_argc){
 	char **argv;
 	int argc = INT(R_argc);
 	struct lldbcdata *cdata = (struct lldbcdata*)R_ExternalPtrAddr(R_cdata);
+	CHECKPTR(cdata);
 
 	argv = malloc((argc+1)*sizeof(*argv));
 	if(argv == NULL)
@@ -89,6 +92,7 @@ SEXP R_set_breakpoint(SEXP R_cdata, SEXP R_fname, SEXP R_line){
 	int line = INT(R_line);
 	SEXP RET;
 	struct lldbcdata *cdata = (struct lldbcdata*)R_ExternalPtrAddr(R_cdata);
+	CHECKPTR(cdata);
 
 	retval = setbreakpoint(cdata,fname,line);
 
@@ -108,6 +112,7 @@ SEXP R_get_value(SEXP R_cdata, SEXP R_expr, SEXP R_start, SEXP R_size){
 	int rawxsize;
 	int type;
 	struct lldbcdata *cdata = (struct lldbcdata*)R_ExternalPtrAddr(R_cdata);
+	CHECKPTR(cdata);
 
 	type = getvalue(cdata,0,expr,&rawx,&rawxsize,start,size,(start==0 && size==1)?extract_scalar:extract_array);
 	if(type < 0 )
@@ -122,4 +127,3 @@ SEXP R_get_value(SEXP R_cdata, SEXP R_expr, SEXP R_start, SEXP R_size){
 #ifdef __cplusplus
 }
 #endif
-
