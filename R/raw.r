@@ -136,7 +136,7 @@ lldb.continue <- function(handle,args){
 #' }
 #' 
 #' @export
-lldb.expr <- function(handle,expr,offset,size){
+lldb.expr <- function(handle,expr,offset=0,size=1){
 	check.is.handle(handle)
 	check.is.string(expr)
 	check.is.natnum(offset)
