@@ -126,6 +126,23 @@ int startprocess(struct lldbcdata *data, const char **args){
 		return 1;
 
 	data->process = process;
+	cpp.process = process;
+
+	print_process_desc(&cpp);
+
+	return 0;
+}
+
+int processcontinue(struct lldbcdata *data){
+	SBError error;
+	struct lldbcppdata cpp;
+	convertstruct(data,&cpp);
+
+	error = cpp.process->Continue();
+	if(!error.Success())
+		return 1;
+
+	print_process_desc(&cpp);
 
 	return 0;
 }

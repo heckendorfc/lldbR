@@ -4,14 +4,18 @@
 \alias{lldb.continue}
 \title{lldb.continue}
 \usage{
-lldb.continue(handle, args)
+lldb.continue(handle)
 }
 \arguments{
 \item{handle}{handle returned from lldb.load}
-
-\item{args}{TODO}
+}
+\value{
+An invisible return code.
 }
 \description{
-lldb.continue
+Continue process execution until the next breakpoint or exit.
+}
+\seealso{
+\code{\link{lldb.break}}
 }
 

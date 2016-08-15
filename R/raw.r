@@ -95,13 +95,24 @@ lldb.run <- function(handle,args=NULL){
 
 #' lldb.continue
 #' 
+#' Continue process execution until the next breakpoint or exit.
+#'
 #' @param handle
 #' handle returned from lldb.load
-#' @param args
-#' TODO
+#'
+#' @return
+#' An invisible return code.
+#' 
+#' @seealso \code{\link{lldb.break}}
 #' 
 #' @export
-lldb.continue <- function(handle,args){
+lldb.continue <- function(handle){
+	check.is.handle(handle)
+	.Call("R_continue",handle,package="lldbR");
+	if (ret != 0){
+		stop(paste("operation completed unsuccessfully: returned error code", ret))
+	}
+	invisible(ret)
 }
 
 #' lldb.expr

@@ -105,6 +105,20 @@ SEXP R_set_breakpoint(SEXP R_cdata, SEXP R_fname, SEXP R_line){
 	return RET;
 }
 
+SEXP R_continue(SEXP R_cdata){
+	int retval;
+	SEXP RET;
+	struct lldbcdata *cdata = (struct lldbcdata*)R_ExternalPtrAddr(R_cdata);
+
+	retval = processcontinue(cdata);
+
+	PROTECT(RET = allocVector(INTSXP, 1));
+	INT(RET) = retval;
+	UNPROTECT(1);
+
+	return RET;
+}
+
 SEXP R_get_value(SEXP R_cdata, SEXP R_expr, SEXP R_start, SEXP R_size){
 	SEXP RET;
 	int start = INT(R_start);
