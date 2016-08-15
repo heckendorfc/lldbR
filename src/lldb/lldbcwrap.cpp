@@ -26,13 +26,20 @@ int extract_array(void *val, void **dst, int *dstsize, int index, int size){
 	SBValue *value = static_cast<SBValue*>(val);
 	SBData dat = value->GetPointeeData(index,size);
 	if(!dat.IsValid())
-		return -1;
+		return -5;
 
 	type = value->GetType();
-	type = type.GetArrayElementType();
+	if(type.IsPointerType())
+		type = type.GetPointeeType();
+	else if(type.IsArrayType())
+		type = type.GetArrayElementType();
+	else
+		return -6;
 
 	*dstsize=size*type.GetByteSize();
 	*dst=malloc(*dstsize);
+	if(*dst == NULL)
+		return -7;
 	dat.ReadRawData(error,0,*dst,*dstsize);
 
 	return type.GetBasicType();
@@ -46,7 +53,7 @@ int extract_scalar(void *val, void **dst, int *dstsize, int index, int size){
 	SBValue *value = static_cast<SBValue*>(val);
 	SBData dat = value->GetData();
 	if(!dat.IsValid())
-		return -1;
+		return -4;
 
 	type = value->GetType();
 

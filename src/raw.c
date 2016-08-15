@@ -110,6 +110,9 @@ SEXP R_get_value(SEXP R_cdata, SEXP R_expr, SEXP R_start, SEXP R_size){
 	struct lldbcdata *cdata = (struct lldbcdata*)R_ExternalPtrAddr(R_cdata);
 
 	type = getvalue(cdata,0,expr,&rawx,&rawxsize,start,size,(start==0 && size==1)?extract_scalar:extract_array);
+	if(type < 0 )
+		error("invalid value return (%d)",type);
+
 	RET = make_r_type(rawx,rawxsize,type);
 	free(rawx);
 
