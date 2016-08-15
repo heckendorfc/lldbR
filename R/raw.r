@@ -2,7 +2,7 @@
 #' 
 #' The initializer that creates a "handle" for lldb.
 #' 
-#' @param process
+#' @param args
 #' process name
 #' 
 #' @return

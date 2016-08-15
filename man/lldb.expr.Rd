@@ -4,7 +4,7 @@
 \alias{lldb.expr}
 \title{lldb.expr}
 \usage{
-lldb.expr(handle, expr, offset, size)
+lldb.expr(handle, expr, offset = 0, size = 1)
 }
 \arguments{
 \item{handle}{handle returned from lldb.load}

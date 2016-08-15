@@ -7,7 +7,7 @@
 lldb.load(args)
 }
 \arguments{
-\item{process}{process name}
+\item{args}{process name}
 }
 \value{
 An object of class \code{lldb_handle}; an external pointer.

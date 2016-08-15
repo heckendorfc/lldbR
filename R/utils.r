@@ -28,7 +28,7 @@ is.string <- function(x){
 
 
 check.is.handle <- function(x){
-	if (!is(x, "lldb_handle")){
+	if (!identical(class(x), "lldb_handle")){
 		nm <- deparse(substitute(x))
 		stop(paste("argument", nm, "must be a proper lldb handle, as returned from lldb.load()"))
 	}
