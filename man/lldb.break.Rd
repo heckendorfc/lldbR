@@ -13,7 +13,22 @@ lldb.break(handle, file, line)
 
 \item{line}{line number to break at}
 }
+\value{
+An invisible return code.
+}
 \description{
-lldb.break
+Set a breakpoint.
+}
+\examples{
+\dontrun{
+handle <- lldb.load("/path/to/binary")
+
+### Break at line 10 of the specified source file 
+lldb.break(handle, "/path/to/source.c", 10)
+}
+
+}
+\seealso{
+\code{\link{lldb.run}}
 }
 

@@ -11,7 +11,13 @@ lldb.run(handle, args = NULL)
 
 \item{args}{command line arguments for the process or \code{NULL} (the default) for no arguments}
 }
+\value{
+An invisible return code.
+}
 \description{
-lldb.run
+Runs the process.
+}
+\seealso{
+\code{\link{lldb.break}}
 }
 

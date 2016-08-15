@@ -1,7 +1,20 @@
 #' lldb.load
 #' 
+#' The initializer that creates a "handle" for lldb.
+#' 
 #' @param process
 #' process name
+#' 
+#' @return
+#' An object of class \code{lldb_handle}; an external pointer.
+#' 
+#' @seealso \code{\link{lldb.expr}}
+#' 
+#' @examples
+#' \dontrun{
+#' handle <- lldb.load("/path/to/binary")
+#' handle
+#' }
 #' 
 #' @export
 lldb.load <- function(args){
@@ -19,6 +32,8 @@ print.lldb_handle <- function(x, ...){
 
 #' lldb.break
 #' 
+#' Set a breakpoint.
+#' 
 #' @param handle
 #' handle returned from lldb.load
 #' @param file
@@ -26,28 +41,55 @@ print.lldb_handle <- function(x, ...){
 #' @param line
 #' line number to break at
 #' 
+#' @return
+#' An invisible return code.
+#' 
+#' @examples
+#' \dontrun{
+#' handle <- lldb.load("/path/to/binary")
+#' 
+#' ### Break at line 10 of the specified source file 
+#' lldb.break(handle, "/path/to/source.c", 10)
+#' }
+#' 
+#' @seealso \code{\link{lldb.run}}
+#' 
 #' @export
 lldb.break <- function(handle,file,line){
 	check.is.handle(handle)
 	check.is.string(file)
 	check.is.posint(line)
 	ret <- .Call(R_set_breakpoint,handle,file,as.integer(line));
+	if (ret != 0){
+		stop(paste("operation completed unsuccessfully: returned error code", ret))
+	}
 	invisible(ret)
 }
 
 #' lldb.run
+#' 
+#' Runs the process.
 #' 
 #' @param handle
 #' handle returned from lldb.load
 #' @param args
 #' command line arguments for the process or \code{NULL} (the default) for no arguments
 #' 
+#' @return
+#' An invisible return code.
+#' 
+#' @seealso \code{\link{lldb.break}}
+#' 
 #' @export
 lldb.run <- function(handle,args=NULL){
 	check.is.handle(handle)
-	if (!is.null(args))
+	if (!is.null(args)){
 		check.is.string(args)
+	}
 	ret <- .Call(R_run_process,handle,args,length(args));
+	if (ret != 0){
+		stop(paste("operation completed unsuccessfully: returned error code", ret))
+	}
 	invisible(ret)
 }
 
@@ -64,6 +106,8 @@ lldb.continue <- function(handle,args){
 
 #' lldb.expr
 #' 
+#' Extract data from the process into R via an expression.
+#' 
 #' @param handle
 #' handle returned from lldb.load
 #' @param expr
@@ -72,6 +116,24 @@ lldb.continue <- function(handle,args){
 #' offset index to read from
 #' @param size
 #' number of elements to read
+#' 
+#' @return
+#' The requested data.
+#' 
+#' @examples
+#' \dontrun{
+#' library(lldbR)
+#' handle <- lldb.load("/path/to/binary")
+#' 
+#' ### Break at line 10 of the specified source file 
+#' lldb.break(handle, "/path/to/source.c", 10)
+#' lldb.run(handle)
+#' 
+#' ### Extract x[0]
+#' lldb.expr(handle, "x")
+#' ### Extract x[2] to x[4]
+#' lldb.expr(handle, "x", 2, 3)
+#' }
 #' 
 #' @export
 lldb.expr <- function(handle,expr,offset,size){
