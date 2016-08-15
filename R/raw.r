@@ -5,7 +5,16 @@
 #' 
 #' @export
 lldb.load <- function(args){
-	.Call("R_load_process",args,package="lldbR");
+	check.is.string(args)
+	ret <- .Call(R_load_process,args);
+	class(ret) <- "lldb_handle"
+	return(ret)
+}
+
+#' @method print lldb_handle
+#' @export
+print.lldb_handle <- function(x, ...){
+	cat("An lldb handle.\n")
 }
 
 #' lldb.break
@@ -19,7 +28,11 @@ lldb.load <- function(args){
 #' 
 #' @export
 lldb.break <- function(handle,file,line){
-	.Call("R_set_breakpoint",handle,file,line,package="lldbR");
+	check.is.handle(handle)
+	check.is.string(file)
+	check.is.posint(line)
+	ret <- .Call(R_set_breakpoint,handle,file,as.integer(line));
+	invisible(ret)
 }
 
 #' lldb.run
@@ -27,11 +40,15 @@ lldb.break <- function(handle,file,line){
 #' @param handle
 #' handle returned from lldb.load
 #' @param args
-#' command line arguments for the process
+#' command line arguments for the process or \code{NULL} (the default) for no arguments
 #' 
 #' @export
-lldb.run <- function(handle,args){
-	.Call("R_run_process",handle,args,length(args),package="lldbR");
+lldb.run <- function(handle,args=NULL){
+	check.is.handle(handle)
+	if (!is.null(args))
+		check.is.string(args)
+	ret <- .Call(R_run_process,handle,args,length(args));
+	invisible(ret)
 }
 
 #' lldb.continue
@@ -58,5 +75,9 @@ lldb.continue <- function(handle,args){
 #' 
 #' @export
 lldb.expr <- function(handle,expr,offset,size){
-	.Call("R_get_value",handle,expr,offset,size,package="lldbR");
+	check.is.handle(handle)
+	check.is.string(expr)
+	check.is.natnum(offset)
+	check.is.posint(size)
+	.Call(R_get_value,handle,expr,as.integer(offset),as.integer(size));
 }
