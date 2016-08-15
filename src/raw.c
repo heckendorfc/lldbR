@@ -48,6 +48,8 @@ SEXP R_load_process(SEXP R_args){
 	if((retval = lldbinit(cdata)))
 		goto err;
 
+	cdata->print=Rprintf;
+
 	if((retval = initprocess(cdata,exename)))
 		goto err;
 

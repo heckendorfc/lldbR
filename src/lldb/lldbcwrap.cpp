@@ -11,6 +11,7 @@ struct lldbcppdata{
 	SBDebugger *debugger;
 	SBTarget *target;
 	SBProcess *process;
+	void(*print)(const char *, ...);
 };
 
 #define convlang(class,elem) if(c->elem) cpp->elem = static_cast<class*>(c->elem)
@@ -18,6 +19,29 @@ static void convertstruct(struct lldbcdata *c, struct lldbcppdata *cpp){
 	convlang(SBDebugger,debugger);
 	convlang(SBTarget,target);
 	convlang(SBProcess,process);
+	cpp->print = c->print;
+}
+
+static void print_process_desc(struct lldbcppdata *cpp){
+	SBThread thread;
+	SBStream strm;
+
+	if(cpp->print == NULL)
+		return;
+
+	if(!cpp->process->IsValid()){
+		cpp->print("Invalid process, unable to print\n");
+		return;
+	}
+
+	cpp->process->GetDescription(strm);
+	thread = cpp->process->GetSelectedThread();
+	if(thread.IsValid()){
+		thread.GetDescription(strm);
+		thread.GetStatus(strm);
+	}
+
+	cpp->print("%s",strm.GetData());
 }
 
 int extract_array(void *val, void **dst, int *dstsize, int index, int size){
