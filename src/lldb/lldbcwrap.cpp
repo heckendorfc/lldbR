@@ -56,6 +56,8 @@ int extract_scalar(void *val, void **dst, int *dstsize, int index, int size){
 		return -4;
 
 	type = value->GetType();
+	if(type.IsPointerType() || type.IsArrayType())
+		return extract_array(val,dst,dstsize,index,size);
 
 	*dstsize=type.GetByteSize();
 	*dst=malloc(*dstsize);
