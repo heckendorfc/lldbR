@@ -1,6 +1,6 @@
 # lldbR
 
-Functions to access the LLDB API so R can be used as a debugger interface.
+**lldbR** is an R package for using R as a debugger interface via the LLDB API.  It is not a debugger for R; it allows you to use R as a debugger for another program.  See the examples below for more information.
 
 
 ## Installation
@@ -20,7 +20,7 @@ remotes::install_github("heckendorfc/lldbR")
 
 ## Package Use
 
-Say we have a file `test.c` that looks like:
+Say we have a file `/tmp/test.c` that looks like:
 
 ```c
 #include <stdlib.h>
@@ -30,7 +30,7 @@ int main(){
   double *x = malloc(10 * sizeof(*x));
   
   for (i=1; i<10; i++){ // oopsie!
-    x[i] = 0.0;
+    x[i] = 15.0;
   }
   
   // imagine we do things here
@@ -40,16 +40,27 @@ int main(){
 }
 ```
 
+If we build this as usual with something like `clang -g -o test /tmp/test.c`, then we can debug this from R using lldbR:
+
 ```r
 library(lldbR)
-handle <- lldb.load("/tmp/a.out")
-lldb.break(handle,"test.c",10)
-lldb.run(handle,NULL)
+handle <- lldb.load("/tmp/test")
+lldb.break(handle, "/tmp/test.c", 10)
+lldb.run(handle)
 
-val <- lldb.expr(handle,"arrayvar",1,5)
-class(val)
-val
+lldb.expr(handle, "x", 0)
+## [1] 0
+lldb.expr(handle, "x", 1)
+## [1] 15
+```
 
-val <- lldb.expr(handle,"container->elemA[6]",0,1)
-class(val)
-val
+We can also do more interesting things, like take a histogram of the first 10 elements of the array:
+
+```r
+vals <- lldb.expr(handle, "x", 0, 10)
+hist(vals)
+```
+
+Which gives the expected histogram:
+
+![Generated histogram](./hist.png)
