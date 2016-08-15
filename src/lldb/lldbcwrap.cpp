@@ -14,7 +14,7 @@ struct lldbcppdata{
 	void(*print)(const char *, ...);
 };
 
-#define convlang(class,elem) if(c->elem) cpp->elem = static_cast<class*>(c->elem)
+#define convlang(class,elem) if(c->elem) cpp->elem = static_cast<class*>(c->elem); else cpp->elem = NULL
 static void convertstruct(struct lldbcdata *c, struct lldbcppdata *cpp){
 	convlang(SBDebugger,debugger);
 	convlang(SBTarget,target);
@@ -119,6 +119,9 @@ int startprocess(struct lldbcdata *data, const char **args){
 	SBProcess *process;
 	struct lldbcppdata cpp;
 	convertstruct(data,&cpp);
+
+	if(cpp.process)
+		cpp.process->Destroy();
 
 	getcwd(pwd,MAXPATHLEN);
 	process = new SBProcess(cpp.target->LaunchSimple(args, NULL, pwd));
