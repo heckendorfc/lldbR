@@ -12,13 +12,15 @@
 extern "C" {
 #endif
 
+#define CHECKPTR(ptr) if(ptr==NULL)error("invalid handler; pointer is NULL")
+
 static void cdata_finalize(SEXP ptr){
 	int i;
 	struct lldbcdata *cdata;
-	if (R_ExternalPtrAddr(ptr) == NULL)
+	if (getRptr(ptr) == NULL)
 		return;
 
-	cdata = (struct lldbcdata*)R_ExternalPtrAddr(ptr);
+	cdata = (struct lldbcdata*)getRptr(ptr);
 	free(cdata);
 	R_ClearExternalPtr(ptr);
 }
@@ -64,7 +66,8 @@ SEXP R_run_process(SEXP R_cdata, SEXP R_argv, SEXP R_argc){
 	SEXP RET;
 	char **argv;
 	int argc = INT(R_argc);
-	struct lldbcdata *cdata = (struct lldbcdata*)R_ExternalPtrAddr(R_cdata);
+	struct lldbcdata *cdata = (struct lldbcdata*)getRptr(R_cdata);
+	CHECKPTR(cdata);
 
 	argv = malloc((argc+1)*sizeof(*argv));
 	if(argv == NULL)
@@ -88,7 +91,8 @@ SEXP R_set_breakpoint(SEXP R_cdata, SEXP R_fname, SEXP R_line){
 	char *fname = CHARPT(R_fname,0);
 	int line = INT(R_line);
 	SEXP RET;
-	struct lldbcdata *cdata = (struct lldbcdata*)R_ExternalPtrAddr(R_cdata);
+	struct lldbcdata *cdata = (struct lldbcdata*)getRptr(R_cdata);
+	CHECKPTR(cdata);
 
 	retval = setbreakpoint(cdata,fname,line);
 
@@ -107,7 +111,8 @@ SEXP R_get_value(SEXP R_cdata, SEXP R_expr, SEXP R_start, SEXP R_size){
 	void *rawx;
 	int rawxsize;
 	int type;
-	struct lldbcdata *cdata = (struct lldbcdata*)R_ExternalPtrAddr(R_cdata);
+	struct lldbcdata *cdata = (struct lldbcdata*)getRptr(R_cdata);
+	CHECKPTR(cdata);
 
 	type = getvalue(cdata,0,expr,&rawx,&rawxsize,start,size,(start==0 && size==1)?extract_scalar:extract_array);
 	if(type < 0 )
@@ -122,4 +127,3 @@ SEXP R_get_value(SEXP R_cdata, SEXP R_expr, SEXP R_start, SEXP R_size){
 #ifdef __cplusplus
 }
 #endif
-

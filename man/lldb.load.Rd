@@ -7,9 +7,22 @@
 lldb.load(args)
 }
 \arguments{
-\item{process}{process name}
+\item{args}{process name}
+}
+\value{
+An object of class \code{lldb_handle}; an external pointer.
 }
 \description{
-lldb.load
+The initializer that creates a "handle" for lldb.
+}
+\examples{
+\dontrun{
+handle <- lldb.load("/path/to/binary")
+handle
+}
+
+}
+\seealso{
+\code{\link{lldb.expr}}
 }
 

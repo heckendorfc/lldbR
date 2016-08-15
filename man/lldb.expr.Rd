@@ -4,7 +4,7 @@
 \alias{lldb.expr}
 \title{lldb.expr}
 \usage{
-lldb.expr(handle, expr, offset, size)
+lldb.expr(handle, expr, offset = 0, size = 1)
 }
 \arguments{
 \item{handle}{handle returned from lldb.load}
@@ -15,7 +15,26 @@ lldb.expr(handle, expr, offset, size)
 
 \item{size}{number of elements to read}
 }
+\value{
+The requested data.
+}
 \description{
-lldb.expr
+Extract data from the process into R via an expression.
+}
+\examples{
+\dontrun{
+library(lldbR)
+handle <- lldb.load("/path/to/binary")
+
+### Break at line 10 of the specified source file 
+lldb.break(handle, "/path/to/source.c", 10)
+lldb.run(handle)
+
+### Extract x[0]
+lldb.expr(handle, "x")
+### Extract x[2] to x[4]
+lldb.expr(handle, "x", 2, 3)
+}
+
 }
 

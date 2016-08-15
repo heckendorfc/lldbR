@@ -5,6 +5,8 @@ rm -rf ./src/*.o
 rm -rf ./src/*.d
 rm -rf ./src/*.dll
 
+rm -rf ./src/Makevars
+
 rm -rf ./src/lldb/*.[oa]
 
 rm -rf ./src/build ./src/libs
