@@ -25,9 +25,17 @@
 
 AC_INIT(DESCRIPTION)
 
-LLDBR_LIBS="-L/usr/local/lib -llldb"
 OBEXTRA="instclldb"
 
+LLDB_HOME="/usr/local"
+
+AC_ARG_WITH(lldb-home,
+	AC_HELP_STRING([--with-lldb-home], [Path to LLDB installation.]),
+	[LLDB_HOME=$withval])
+
+LLDBR_LIBS="-L${LLDB_HOME}/lib -llldb"
+
+AC_SUBST(LLDB_HOME)
 AC_SUBST(LLDBR_LIBS)
 AC_SUBST(OBEXTRA)
 
