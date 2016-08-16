@@ -11,13 +11,13 @@
 #' @param handle
 #' handle returned from \code{lldb.load()} or \code{NULL} for the default handle
 #'
+#' @return
+#' An invisible return code.
+#' 
 #' @name lldb.step
 NULL
 
 #' lldb.step steps either 'into', 'out' of, or 'over' a function or line
-#' 
-#' @return
-#' An invisible return code.
 #' 
 #' @rdname lldb.step
 #' @export lldb.step
@@ -32,9 +32,6 @@ lldb.step <- function(method="into",handle=NULL){
 }
 
 #' lldb.stepto steps until reaching the specified line
-#' 
-#' @return
-#' An invisible return code.
 #' 
 #' @rdname lldb.step
 #' @export lldb.stepto

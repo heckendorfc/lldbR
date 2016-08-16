@@ -20,8 +20,6 @@ lldb.stepto(file = NULL, line = 0, handle = NULL)
 }
 \value{
 An invisible return code.
-
-An invisible return code.
 }
 \description{
 Continue process execution until the next line

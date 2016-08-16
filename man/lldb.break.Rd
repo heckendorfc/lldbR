@@ -20,12 +20,8 @@ lldb.breakfun(symbol = NULL, module = NULL, handle = NULL)
 \item{symbol}{symbol (function) to break in}
 
 \item{module}{module to search for symbol}
-
-\item{handle}{handle returned from \code{lldb.load()} or \code{NULL} for the default handle}
 }
 \value{
-An invisible return code.
-
 An invisible return code.
 }
 \description{
@@ -42,11 +38,6 @@ lldb.load("/path/to/binary")
 
 ### Break at line 10 of the specified source file 
 lldb.breakline(file="/path/to/source.c", line=10)
-}
-
-\dontrun{
-library(lldbR)
-lldb.load("/path/to/binary")
 
 ### Break in main()
 lldb.breakfun(symbol="main")
@@ -55,7 +46,5 @@ lldb.breakfun(symbol="main")
 }
 \seealso{
 \code{\link{lldb.run}}
-
-\code{\link{lldb.run}} \code{\link{lldb.breakline}}
 }
 

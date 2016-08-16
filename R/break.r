@@ -13,11 +13,6 @@
 #' @param handle
 #' handle returned from \code{lldb.load()} or \code{NULL} for the default handle
 #'
-#' @name lldb.break
-NULL
-
-#' lldb.breakline sets a breakpoint at the specified line
-#' 
 #' @return
 #' An invisible return code.
 #' 
@@ -28,9 +23,17 @@ NULL
 #' 
 #' ### Break at line 10 of the specified source file 
 #' lldb.breakline(file="/path/to/source.c", line=10)
+#'
+#' ### Break in main()
+#' lldb.breakfun(symbol="main")
 #' }
 #' 
 #' @seealso \code{\link{lldb.run}}
+#' 
+#' @name lldb.break
+NULL
+
+#' lldb.breakline sets a breakpoint at the specified line
 #' 
 #' @rdname lldb.break
 #' @export lldb.breakline
@@ -48,23 +51,6 @@ lldb.breakline <- function(file=NULL,line=0,handle=NULL){
 }
 
 #' lldb.breakfun sets a breakpoint at the specified symbol
-#' 
-#' @param handle
-#' handle returned from \code{lldb.load()} or \code{NULL} for the default handle
-#' 
-#' @return
-#' An invisible return code.
-#' 
-#' @examples
-#' \dontrun{
-#' library(lldbR)
-#' lldb.load("/path/to/binary")
-#' 
-#' ### Break in main()
-#' lldb.breakfun(symbol="main")
-#' }
-#' 
-#' @seealso \code{\link{lldb.run}} \code{\link{lldb.breakline}}
 #' 
 #' @rdname lldb.break
 #' @export lldb.breakfun
