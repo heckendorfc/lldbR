@@ -586,6 +586,7 @@ ac_subst_vars='LTLIBOBJS
 LIBOBJS
 OBEXTRA
 LLDBR_LIBS
+LLDB_HOME
 target_alias
 host_alias
 build_alias
@@ -627,6 +628,7 @@ SHELL'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
+with_lldb_home
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1234,6 +1236,11 @@ if test -n "$ac_init_help"; then
 
   cat <<\_ACEOF
 
+Optional Packages:
+  --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
+  --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-lldb-home        Path to LLDB installation.
+
 Report bugs to the package provider.
 _ACEOF
 ac_status=$?
@@ -1663,8 +1670,19 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
-LLDBR_LIBS="-L/usr/local/lib -llldb"
 OBEXTRA="instclldb"
+
+LLDB_HOME="/usr/local"
+
+
+# Check whether --with-lldb-home was given.
+if test "${with_lldb_home+set}" = set; then :
+  withval=$with_lldb_home; LLDB_HOME=$withval
+fi
+
+
+LLDBR_LIBS="-L${LLDB_HOME}/lib -llldb"
+
 
 
 
