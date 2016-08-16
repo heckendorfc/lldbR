@@ -97,8 +97,13 @@ int getvalue(struct lldbcdata *data, const int frame, const char *varname, void 
 	SBData dat;
 	SBType type;
 	struct lldbcppdata cpp;
+
+	if(data == NULL)
+		return -1;
 	convertstruct(data,&cpp);
 
+	if(cpp.process == NULL)
+		return -1;
 	thread = cpp.process->GetSelectedThread();
 	if(!thread.IsValid())
 		return -1;
@@ -118,7 +123,13 @@ int startprocess(struct lldbcdata *data, const char **args){
 	char pwd[MAXPATHLEN];
 	SBProcess *process;
 	struct lldbcppdata cpp;
+
+	if(data == NULL)
+		return 1;
 	convertstruct(data,&cpp);
+
+	if(cpp.target == NULL)
+		return 1;
 
 	if(cpp.process)
 		cpp.process->Destroy();
@@ -139,8 +150,13 @@ int startprocess(struct lldbcdata *data, const char **args){
 int processcontinue(struct lldbcdata *data){
 	SBError error;
 	struct lldbcppdata cpp;
+
+	if(data == NULL)
+		return 1;
 	convertstruct(data,&cpp);
 
+	if(cpp.process == NULL)
+		return 1;
 	error = cpp.process->Continue();
 	if(!error.Success())
 		return 1;
@@ -153,8 +169,13 @@ int processcontinue(struct lldbcdata *data){
 int processstep(struct lldbcdata *data, const int method){
 	SBThread thread;
 	struct lldbcppdata cpp;
+
+	if(data == NULL)
+		return 1;
 	convertstruct(data,&cpp);
 
+	if(cpp.process == NULL)
+		return 1;
 	thread = cpp.process->GetSelectedThread();
 	if(!thread.IsValid())
 		return 1;
@@ -183,8 +204,13 @@ int processstepto(struct lldbcdata *data, const int frame, const char *file, con
 	SBFrame frame0;
 	SBFileSpec filespec(file);
 	struct lldbcppdata cpp;
+
+	if(data == NULL)
+		return 1;
 	convertstruct(data,&cpp);
 
+	if(cpp.process == NULL)
+		return 1;
 	thread = cpp.process->GetSelectedThread();
 	if(!thread.IsValid())
 		return 1;
@@ -203,8 +229,13 @@ int processstepto(struct lldbcdata *data, const int frame, const char *file, con
 int setbreakpoint(struct lldbcdata *data, const struct breakargs *barg){
 	SBBreakpoint *br;
 	struct lldbcppdata cpp;
+
+	if(data == NULL)
+		return 1;
 	convertstruct(data,&cpp);
 
+	if(cpp.target == NULL)
+		return 1;
 	if(barg->file && barg->line>0)
 		br = new SBBreakpoint(cpp.target->BreakpointCreateByLocation(barg->file,barg->line));
 	else if(barg->symbol)
@@ -226,8 +257,13 @@ int initprocess(struct lldbcdata *data, const char *exe_file_path){
 	SBError error;
 	SBTarget *target;
 	struct lldbcppdata cpp;
+
+	if(data == NULL)
+		return 1;
 	convertstruct(data,&cpp);
 
+	if(cpp.debugger == NULL)
+		return 1;
 	target = new SBTarget(cpp.debugger->CreateTarget(exe_file_path, arch, platform, add_dependent_libs, error));
 
 	if (!error.Success())
@@ -243,6 +279,10 @@ int initprocess(struct lldbcdata *data, const char *exe_file_path){
 
 int lldbinit(struct lldbcdata *data){
 	SBDebugger *debugger;
+
+	if(data == NULL)
+		return 1;
+
 	SBDebugger::Initialize();
 
 	debugger = new SBDebugger(SBDebugger::Create());
