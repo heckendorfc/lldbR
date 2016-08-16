@@ -150,12 +150,18 @@ int processcontinue(struct lldbcdata *data){
 	return 0;
 }
 
-int setbreakpoint(struct lldbcdata *data, const char *file, const uint32_t line){
+int setbreakpoint(struct lldbcdata *data, const struct breakargs *barg){
 	SBBreakpoint *br;
 	struct lldbcppdata cpp;
 	convertstruct(data,&cpp);
 
-	br = new SBBreakpoint(cpp.target->BreakpointCreateByLocation(file,line));
+	if(barg->file && barg->line>0)
+		br = new SBBreakpoint(cpp.target->BreakpointCreateByLocation(barg->file,barg->line));
+	else if(barg->symbol)
+		br = new SBBreakpoint(cpp.target->BreakpointCreateByName(barg->symbol,barg->module));
+	else
+		return 1;
+
 	if(!br->IsValid())
 		return 1;
 

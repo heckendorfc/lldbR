@@ -32,7 +32,7 @@ print.lldb_handle <- function(x, ...){
 
 #' lldb.break
 #' 
-#' Set a breakpoint.
+#' Set a breakpoint. Requires either file+line or symbol+(optional)module.
 #' 
 #' @param handle
 #' handle returned from lldb.load
@@ -40,6 +40,10 @@ print.lldb_handle <- function(x, ...){
 #' source file to break in
 #' @param line
 #' line number to break at
+#' @param symbol
+#' symbol (function) to break in
+#' @param module 
+#' module to search for symbol
 #' 
 #' @return
 #' An invisible return code.
@@ -49,20 +53,29 @@ print.lldb_handle <- function(x, ...){
 #' handle <- lldb.load("/path/to/binary")
 #' 
 #' ### Break at line 10 of the specified source file 
-#' lldb.break(handle, "/path/to/source.c", 10)
+#' lldb.break(handle, file="/path/to/source.c", line=10)
+
+#' ### Break in main()
+#' lldb.break(handle, symbol="main")
 #' }
 #' 
 #' @seealso \code{\link{lldb.run}}
 #' 
 #' @export
-lldb.break <- function(handle,file,line){
+lldb.break <- function(handle,file=NULL,line=0,symbol=NULL,module=NULL){
 	check.is.handle(handle)
-	check.is.string(file)
-	check.is.posint(line)
-	ret <- .Call(R_set_breakpoint,handle,file,as.integer(line));
+	check.is.string.or.null(file)
+	check.is.int(line)
+	if(is.negative(line))
+		stop("argument 'line' must not be negative")
+	check.is.string.or.null(symbol)
+	check.is.string.or.null(module)
+
+	ret <- .External(R_set_breakpoint,handle=handle,file=file,line=as.integer(line),symbol=symbol,module=module);
 	if (ret != 0){
 		stop(paste("operation completed unsuccessfully: returned error code", ret))
 	}
+
 	invisible(ret)
 }
 

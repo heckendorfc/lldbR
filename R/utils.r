@@ -42,6 +42,13 @@ check.is.string <- function(x){
 	invisible(TRUE)
 }
 
+check.is.string.or.null <- function(x){
+	if (!is.null(x)){
+		check.is.string(x);
+	}
+	invisible(TRUE)
+}
+
 check.is.int <- function(x){
 	if (!is.numeric(x) || is.annoying(x) || !is.inty(x))	{
 		nm <- deparse(substitute(x))
