@@ -88,15 +88,41 @@ SEXP R_run_process(SEXP R_cdata, SEXP R_argv, SEXP R_argc){
 	return RET;
 }
 
-SEXP R_set_breakpoint(SEXP R_cdata, SEXP R_fname, SEXP R_line){
+SEXP R_set_breakpoint(SEXP R_args){
+	int i;
 	int retval;
-	char *fname = CHARPT(R_fname,0);
-	int line = INT(R_line);
-	SEXP RET;
-	struct lldbcdata *cdata = (struct lldbcdata*)getRptr(R_cdata);
+	int type;
+	const char *name;
+	struct breakargs barg;
+	SEXP el, RET;
+	struct lldbcdata *cdata;
+
+	R_args = CDR(R_args); // name
+
+	el = CAR(R_args);
+	R_args = CDR(R_args);
+	cdata = (struct lldbcdata*)getRptr(el);
 	CHECKPTR(cdata);
 
-	retval = setbreakpoint(cdata,fname,line);
+	memset(&barg,0,sizeof(barg));
+
+	for(i=0; R_args != R_NilValue; i++, R_args = CDR(R_args)){
+		name = isNull(TAG(R_args)) ? "" : CHAR(PRINTNAME(TAG(R_args)));
+		el = CAR(R_args);
+		if(length(el) == 0)
+			continue;
+
+		if(strcmp(name,"line")==0 && TYPEOF(el)==INTSXP)
+			barg.line = INT(el);
+		else if(strcmp(name,"file")==0 && TYPEOF(el)==STRSXP)
+			barg.file = CHARPT(el,0);
+		else if(strcmp(name,"module")==0 && TYPEOF(el)==STRSXP)
+			barg.module = CHARPT(el,0);
+		else if(strcmp(name,"symbol")==0 && TYPEOF(el)==STRSXP)
+			barg.symbol = CHARPT(el,0);
+	}
+
+	retval = setbreakpoint(cdata,&barg);
 
 	PROTECT(RET = allocVector(INTSXP, 1));
 	INT(RET) = retval;

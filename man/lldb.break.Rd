@@ -4,12 +4,17 @@
 \alias{lldb.break}
 \title{lldb.break}
 \usage{
-lldb.break(file, line, handle = NULL)
+lldb.break(file = NULL, line = 0, symbol = NULL, module = NULL,
+  handle = NULL)
 }
 \arguments{
 \item{file}{source file to break in}
 
 \item{line}{line number to break at}
+
+\item{symbol}{symbol (function) to break in}
+
+\item{module}{module to search for symbol}
 
 \item{handle}{handle returned from \code{lldb.load()} or \code{NULL} for the default handle}
 }
@@ -17,7 +22,7 @@ lldb.break(file, line, handle = NULL)
 An invisible return code.
 }
 \description{
-Set a breakpoint.
+Set a breakpoint. Requires either file+line or symbol+(optional)module.
 }
 \examples{
 \dontrun{
@@ -25,7 +30,9 @@ library(lldbR)
 lldb.load("/path/to/binary")
 
 ### Break at line 10 of the specified source file 
-lldb.break("/path/to/source.c", 10)
+lldb.break(file="/path/to/source.c", line=10)
+### Break in main()
+lldb.break(handle, symbol="main")
 }
 
 }

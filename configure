@@ -587,6 +587,7 @@ LIBOBJS
 OBEXTRA
 LLDBR_LIBS
 LLDB_HOME
+MAKE
 target_alias
 host_alias
 build_alias
@@ -1682,6 +1683,15 @@ fi
 
 
 LLDBR_LIBS="-L${LLDB_HOME}/lib -llldb"
+
+UNAME=`uname`
+MAKE=make
+
+if test x$UNAME = xFreeBSD ; then
+MAKE=gmake
+fi
+
+
 
 
 

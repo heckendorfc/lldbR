@@ -1,6 +1,7 @@
 #######################################################
 
 LLDB_HOME = @LLDB_HOME@
+MAKE = @MAKE@
 
 PKG_CPPFLAGS = -I$(LLDB_HOME)/include
 PKG_LIBS = @LLDBR_LIBS@
@@ -18,7 +19,7 @@ $(OBJECTS): $(OBEXTRA)
 
 
 mkclldb:
-	( mkdir -p libs; cd lldb; gmake BUILD_DIR=../ LLDB_HOME=$(LLDB_HOME) LDB_LIBS=$(PKG_LIBS))
+	( mkdir -p libs; cd lldb; $(MAKE) BUILD_DIR=../ LLDB_HOME=$(LLDB_HOME) LDB_LIBS=$(PKG_LIBS))
 
 instclldb: mkclldb
 
