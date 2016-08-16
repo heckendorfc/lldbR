@@ -42,14 +42,51 @@ lldb.load <- function(args,setdefault=TRUE){
 	invisible(ret)
 }
 
-#' lldb.break
+#' lldb.breakline
 #' 
-#' Set a breakpoint. Requires either file+line or symbol+(optional)module.
+#' Set a breakpoint at the specified line number
 #' 
 #' @param file
 #' source file to break in
 #' @param line
 #' line number to break at
+#' @param handle
+#' handle returned from \code{lldb.load()} or \code{NULL} for the default handle
+#' 
+#' @return
+#' An invisible return code.
+#' 
+#' @examples
+#' \dontrun{
+#' library(lldbR)
+#' lldb.load("/path/to/binary")
+#' 
+#' ### Break at line 10 of the specified source file 
+#' lldb.break(file="/path/to/source.c", line=10)
+#' }
+#' 
+#' @seealso \code{\link{lldb.run}} \code{\link{lldb.breakfun}}
+#' 
+#' @export
+lldb.breakline <- function(file=NULL,line=0,handle=NULL){
+	check.is.string.or.null(file)
+	check.is.int(line)
+	if(is.negative(line))
+		stop("argument 'line' must not be negative")
+	handle <- acquire.handle(handle)
+
+	ret <- .External(R_set_breakpoint,handle=handle,file=file,line=as.integer(line));
+	if (ret != 0){
+		stop(paste("operation completed unsuccessfully: returned error code", ret))
+	}
+
+	invisible(ret)
+}
+
+#' lldb.breakfun
+#' 
+#' Set a breakpoint at the specified symbol
+#' 
 #' @param symbol
 #' symbol (function) to break in
 #' @param module 
@@ -65,26 +102,19 @@ lldb.load <- function(args,setdefault=TRUE){
 #' library(lldbR)
 #' lldb.load("/path/to/binary")
 #' 
-#' ### Break at line 10 of the specified source file 
-#' lldb.break(file="/path/to/source.c", line=10)
-
 #' ### Break in main()
 #' lldb.break(symbol="main")
 #' }
 #' 
-#' @seealso \code{\link{lldb.run}}
+#' @seealso \code{\link{lldb.run}} \code{\link{lldb.breakline}}
 #' 
 #' @export
-lldb.break <- function(file=NULL,line=0,symbol=NULL,module=NULL,handle=NULL){
-	check.is.string.or.null(file)
-	check.is.int(line)
-	if(is.negative(line))
-		stop("argument 'line' must not be negative")
+lldb.breakfun <- function(symbol=NULL,module=NULL,handle=NULL){
 	check.is.string.or.null(symbol)
 	check.is.string.or.null(module)
 	handle <- acquire.handle(handle)
 
-	ret <- .External(R_set_breakpoint,handle=handle,file=file,line=as.integer(line),symbol=symbol,module=module);
+	ret <- .External(R_set_breakpoint,handle=handle,symbol=symbol,module=module);
 	if (ret != 0){
 		stop(paste("operation completed unsuccessfully: returned error code", ret))
 	}

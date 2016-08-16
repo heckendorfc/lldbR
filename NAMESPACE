@@ -2,7 +2,8 @@
 
 S3method(print,lldb_handle)
 export(get.default.handle)
-export(lldb.break)
+export(lldb.breakfun)
+export(lldb.breakline)
 export(lldb.continue)
 export(lldb.expr)
 export(lldb.load)
