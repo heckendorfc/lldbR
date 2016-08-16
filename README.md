@@ -6,13 +6,10 @@
 
 ## Installation
 
-The development version is maintained on GitHub, and can (possibly) be installed by any of the packages that offer installations from GitHub:
+The package requires an installation of LLDB.  By default, the package will look for this in `/usr/local`. If your installation is elsewhere, you can specify it via the configure argument `--with-lldb-home`.  For example, on a recent version of Ubuntu, you might install it via:
 
-```r
-### Pick your preference
-devtools::install_github("heckendorfc/lldbR")
-ghit::install_github("heckendorfc/lldbR")
-remotes::install_github("heckendorfc/lldbR")
+```bash
+R CMD INSTALL lldbR_1.0.tar.gz --configure-args="--with-lldb-home='/usr/lib/llvm-3.8/'"
 ```
 
 
