@@ -25,7 +25,25 @@ is.string <- function(x){
 		TRUE
 }
 
-
+#' Character Splitter
+#' 
+#' A utility function that splits a string into a character vector suitable for
+#' the args parameter of lldb.run
+#'
+#' @param x
+#' string containing to be processed and split
+#' 
+#' @return
+#' The string split into a character vector
+#' 
+#' @seealso \code{\link{lldb.run}}
+#' 
+#' @export
+splitter <- function(x){
+    x <- gsub(x, pattern="(\\t| +)", replacement=" ")
+    x <- sub(pattern=" +$", replacement="", x=x)
+    strsplit(x, split=" ")[[1]]
+}
 
 check.is.handle <- function(x){
 	if (!identical(class(x), "lldb_handle")){

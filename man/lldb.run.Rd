@@ -7,7 +7,9 @@
 lldb.run(args = NULL, handle = NULL)
 }
 \arguments{
-\item{args}{command line arguments for the process or \code{NULL} (the default) for no arguments}
+\item{args}{command line arguments for the process or \code{NULL} (the default) for no
+arguments. Each argument should be in its own string. \code{splitter} can be
+used to split a single string.}
 
 \item{handle}{handle returned from \code{lldb.load()} or \code{NULL} for the default handle}
 }
@@ -18,6 +20,6 @@ An invisible return code.
 Runs the process.
 }
 \seealso{
-\code{\link{lldb.break}}
+\code{\link{lldb.break}} \code{\link{splitter}}
 }
 

@@ -97,20 +97,21 @@ lldb.break <- function(file=NULL,line=0,symbol=NULL,module=NULL,handle=NULL){
 #' Runs the process.
 #' 
 #' @param args
-#' command line arguments for the process or \code{NULL} (the default) for no arguments
+#' command line arguments for the process or \code{NULL} (the default) for no
+#' arguments. Each argument should be in its own string. \code{splitter} can be
+#' used to split a single string.
 #' @param handle
 #' handle returned from \code{lldb.load()} or \code{NULL} for the default handle
 #' 
 #' @return
 #' An invisible return code.
 #' 
-#' @seealso \code{\link{lldb.break}}
+#' @seealso \code{\link{lldb.break}} \code{\link{splitter}} 
 #' 
 #' @export
 lldb.run <- function(args=NULL,handle=NULL){
-	if (!is.null(args)){
-		check.is.string(args)
-	}
+	if (!is.null(args) && !is.character(args))
+		stop("args must be of class 'character' or NULL")
 	handle <- acquire.handle(handle)
 	ret <- .Call(R_run_process,handle,args,length(args));
 	if (ret != 0){
