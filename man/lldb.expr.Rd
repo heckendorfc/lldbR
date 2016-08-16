@@ -4,16 +4,16 @@
 \alias{lldb.expr}
 \title{lldb.expr}
 \usage{
-lldb.expr(handle, expr, offset = 0, size = 1)
+lldb.expr(expr, offset = 0, size = 1, handle = NULL)
 }
 \arguments{
-\item{handle}{handle returned from lldb.load}
-
 \item{expr}{expression to evaluate}
 
 \item{offset}{offset index to read from}
 
 \item{size}{number of elements to read}
+
+\item{handle}{handle returned from \code{lldb.load()} or \code{NULL} for the default handle}
 }
 \value{
 The requested data.
@@ -24,16 +24,16 @@ Extract data from the process into R via an expression.
 \examples{
 \dontrun{
 library(lldbR)
-handle <- lldb.load("/path/to/binary")
+lldb.load("/path/to/binary")
 
 ### Break at line 10 of the specified source file 
-lldb.break(handle, "/path/to/source.c", 10)
-lldb.run(handle)
+lldb.break("/path/to/source.c", 10)
+lldb.run()
 
 ### Extract x[0]
-lldb.expr(handle, "x")
+lldb.expr("x")
 ### Extract x[2] to x[4]
-lldb.expr(handle, "x", 2, 3)
+lldb.expr("x", 2, 3)
 }
 
 }

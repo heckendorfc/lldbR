@@ -2,63 +2,76 @@
 #' 
 #' The initializer that creates a "handle" for lldb.
 #' 
+#' @details
+#' This function will automatically update the default handle.  If 
+#' 
 #' @param args
 #' process name
+#' @param setdefault
+#' if \code{TRUE}, then the default handle will be updated with the return.
 #' 
 #' @return
 #' An object of class \code{lldb_handle}; an external pointer.
 #' 
-#' @seealso \code{\link{lldb.expr}}
+#' @seealso \code{\link{handles}}
 #' 
 #' @examples
 #' \dontrun{
-#' handle <- lldb.load("/path/to/binary")
-#' handle
+#' library(lldbR)
+#' 
+#' lldb.load("/path/to/binary")
+#' handle1 <- get.default.handle()
+#' 
+#' handle2 <- lldb.load("/path/to/another/binary", setdefault=FALSE)
+#' 
+#' identical(handle1, get.default.handle()) # TRUE
+#' identical(handle2, get.default.handle()) # FALSE
+#' set.default.handle(handle2)
+#' identical(handle2, get.default.handle()) # TRUE
 #' }
 #' 
 #' @export
-lldb.load <- function(args){
+lldb.load <- function(args,setdefault=TRUE){
 	check.is.string(args)
+	check.is.flag(setdefault)
 	ret <- .Call(R_load_process,args);
 	class(ret) <- "lldb_handle"
-	return(ret)
-}
-
-#' @method print lldb_handle
-#' @export
-print.lldb_handle <- function(x, ...){
-	cat("An lldb handle.\n")
+	if (setdefault){
+		set.default.handle(ret)
+	}
+	invisible(ret)
 }
 
 #' lldb.break
 #' 
 #' Set a breakpoint.
 #' 
-#' @param handle
-#' handle returned from lldb.load
 #' @param file
 #' source file to break in
 #' @param line
 #' line number to break at
+#' @param handle
+#' handle returned from \code{lldb.load()} or \code{NULL} for the default handle
 #' 
 #' @return
 #' An invisible return code.
 #' 
 #' @examples
 #' \dontrun{
-#' handle <- lldb.load("/path/to/binary")
+#' library(lldbR)
+#' lldb.load("/path/to/binary")
 #' 
 #' ### Break at line 10 of the specified source file 
-#' lldb.break(handle, "/path/to/source.c", 10)
+#' lldb.break("/path/to/source.c", 10)
 #' }
 #' 
 #' @seealso \code{\link{lldb.run}}
 #' 
 #' @export
-lldb.break <- function(handle,file,line){
-	check.is.handle(handle)
+lldb.break <- function(file,line,handle=NULL){
 	check.is.string(file)
 	check.is.posint(line)
+	handle <- acquire.handle(handle)
 	ret <- .Call(R_set_breakpoint,handle,file,as.integer(line));
 	if (ret != 0){
 		stop(paste("operation completed unsuccessfully: returned error code", ret))
@@ -70,10 +83,10 @@ lldb.break <- function(handle,file,line){
 #' 
 #' Runs the process.
 #' 
-#' @param handle
-#' handle returned from lldb.load
 #' @param args
 #' command line arguments for the process or \code{NULL} (the default) for no arguments
+#' @param handle
+#' handle returned from \code{lldb.load()} or \code{NULL} for the default handle
 #' 
 #' @return
 #' An invisible return code.
@@ -81,11 +94,11 @@ lldb.break <- function(handle,file,line){
 #' @seealso \code{\link{lldb.break}}
 #' 
 #' @export
-lldb.run <- function(handle,args=NULL){
-	check.is.handle(handle)
+lldb.run <- function(args=NULL,handle=NULL){
 	if (!is.null(args)){
 		check.is.string(args)
 	}
+	handle <- acquire.handle(handle)
 	ret <- .Call(R_run_process,handle,args,length(args));
 	if (ret != 0){
 		stop(paste("operation completed unsuccessfully: returned error code", ret))
@@ -98,7 +111,7 @@ lldb.run <- function(handle,args=NULL){
 #' Continue process execution until the next breakpoint or exit.
 #'
 #' @param handle
-#' handle returned from lldb.load
+#' handle returned from \code{lldb.load()} or \code{NULL} for the default handle
 #'
 #' @return
 #' An invisible return code.
@@ -106,8 +119,8 @@ lldb.run <- function(handle,args=NULL){
 #' @seealso \code{\link{lldb.break}}
 #' 
 #' @export
-lldb.continue <- function(handle){
-	check.is.handle(handle)
+lldb.continue <- function(handle=NULL){
+	handle <- acquire.handle(handle)
 	ret <- .Call("R_continue",handle,package="lldbR");
 	if (ret != 0){
 		stop(paste("operation completed unsuccessfully: returned error code", ret))
@@ -119,14 +132,14 @@ lldb.continue <- function(handle){
 #' 
 #' Extract data from the process into R via an expression.
 #' 
-#' @param handle
-#' handle returned from lldb.load
 #' @param expr
 #' expression to evaluate
 #' @param offset
 #' offset index to read from
 #' @param size
 #' number of elements to read
+#' @param handle
+#' handle returned from \code{lldb.load()} or \code{NULL} for the default handle
 #' 
 #' @return
 #' The requested data.
@@ -134,23 +147,23 @@ lldb.continue <- function(handle){
 #' @examples
 #' \dontrun{
 #' library(lldbR)
-#' handle <- lldb.load("/path/to/binary")
+#' lldb.load("/path/to/binary")
 #' 
 #' ### Break at line 10 of the specified source file 
-#' lldb.break(handle, "/path/to/source.c", 10)
-#' lldb.run(handle)
+#' lldb.break("/path/to/source.c", 10)
+#' lldb.run()
 #' 
 #' ### Extract x[0]
-#' lldb.expr(handle, "x")
+#' lldb.expr("x")
 #' ### Extract x[2] to x[4]
-#' lldb.expr(handle, "x", 2, 3)
+#' lldb.expr("x", 2, 3)
 #' }
 #' 
 #' @export
-lldb.expr <- function(handle,expr,offset=0,size=1){
-	check.is.handle(handle)
+lldb.expr <- function(expr,offset=0,size=1,handle=NULL){
 	check.is.string(expr)
 	check.is.natnum(offset)
 	check.is.posint(size)
+	handle <- acquire.handle(handle)
 	.Call(R_get_value,handle,expr,as.integer(offset),as.integer(size));
 }

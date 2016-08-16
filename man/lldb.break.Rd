@@ -4,14 +4,14 @@
 \alias{lldb.break}
 \title{lldb.break}
 \usage{
-lldb.break(handle, file, line)
+lldb.break(file, line, handle = NULL)
 }
 \arguments{
-\item{handle}{handle returned from lldb.load}
-
 \item{file}{source file to break in}
 
 \item{line}{line number to break at}
+
+\item{handle}{handle returned from \code{lldb.load()} or \code{NULL} for the default handle}
 }
 \value{
 An invisible return code.
@@ -21,10 +21,11 @@ Set a breakpoint.
 }
 \examples{
 \dontrun{
-handle <- lldb.load("/path/to/binary")
+library(lldbR)
+lldb.load("/path/to/binary")
 
 ### Break at line 10 of the specified source file 
-lldb.break(handle, "/path/to/source.c", 10)
+lldb.break("/path/to/source.c", 10)
 }
 
 }
