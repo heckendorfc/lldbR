@@ -28,7 +28,7 @@ acquire.handle <- function(handle){
 #' \code{get.default.handle()} returns the default handle if set, and errors
 #' otherwise. \code{set.default.handle()} sets the global default handle value.
 #' 
-#' @seealso \link{\link{lldb.load}}
+#' @seealso \code{\link{lldb.load}}
 #' 
 #' @name handles
 #' @rdname handles

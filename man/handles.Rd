@@ -21,6 +21,6 @@ otherwise. \code{set.default.handle()} sets the global default handle value.
 Functions to get and set the default handle.
 }
 \seealso{
-\link{\link{lldb.load}}
+\code{\link{lldb.load}}
 }
 
