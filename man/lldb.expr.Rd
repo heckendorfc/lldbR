@@ -27,7 +27,7 @@ library(lldbR)
 lldb.load("/path/to/binary")
 
 ### Break at line 10 of the specified source file 
-lldb.break("/path/to/source.c", 10)
+lldb.breakline("/path/to/source.c", 10)
 lldb.run()
 
 ### Extract x[0]

@@ -41,7 +41,7 @@ If we build this as usual with something like `clang -g -o test /tmp/test.c`, th
 ```r
 library(lldbR)
 lldb.load("/tmp/test")
-lldb.break("/tmp/test.c", 10)
+lldb.breakline("/tmp/test.c", 10)
 lldb.run()
 
 lldb.expr("x", 0)

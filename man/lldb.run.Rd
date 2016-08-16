@@ -20,6 +20,6 @@ An invisible return code.
 Runs the process.
 }
 \seealso{
-\code{\link{lldb.break}} \code{\link{splitter}}
+\code{\link{lldb.breakfun}} \code{\link{lldb.breakline}} \code{\link{splitter}}
 }
 

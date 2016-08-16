@@ -62,7 +62,7 @@ lldb.load <- function(args,setdefault=TRUE){
 #' lldb.load("/path/to/binary")
 #' 
 #' ### Break at line 10 of the specified source file 
-#' lldb.break(file="/path/to/source.c", line=10)
+#' lldb.breakline(file="/path/to/source.c", line=10)
 #' }
 #' 
 #' @seealso \code{\link{lldb.run}} \code{\link{lldb.breakfun}}
@@ -103,7 +103,7 @@ lldb.breakline <- function(file=NULL,line=0,handle=NULL){
 #' lldb.load("/path/to/binary")
 #' 
 #' ### Break in main()
-#' lldb.break(symbol="main")
+#' lldb.breakfun(symbol="main")
 #' }
 #' 
 #' @seealso \code{\link{lldb.run}} \code{\link{lldb.breakline}}
@@ -136,7 +136,7 @@ lldb.breakfun <- function(symbol=NULL,module=NULL,handle=NULL){
 #' @return
 #' An invisible return code.
 #' 
-#' @seealso \code{\link{lldb.break}} \code{\link{splitter}} 
+#' @seealso \code{\link{lldb.breakfun}} \code{\link{lldb.breakline}} \code{\link{splitter}} 
 #' 
 #' @export
 lldb.run <- function(args=NULL,handle=NULL){
@@ -160,7 +160,7 @@ lldb.run <- function(args=NULL,handle=NULL){
 #' @return
 #' An invisible return code.
 #' 
-#' @seealso \code{\link{lldb.break}}
+#' @seealso  \code{\link{lldb.breakline}}\code{\link{lldb.breakfun}}
 #' 
 #' @export
 lldb.continue <- function(handle=NULL){
@@ -194,7 +194,7 @@ lldb.continue <- function(handle=NULL){
 #' lldb.load("/path/to/binary")
 #' 
 #' ### Break at line 10 of the specified source file 
-#' lldb.break("/path/to/source.c", 10)
+#' lldb.breakline("/path/to/source.c", 10)
 #' lldb.run()
 #' 
 #' ### Extract x[0]

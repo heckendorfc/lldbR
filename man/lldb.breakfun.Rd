@@ -25,7 +25,7 @@ library(lldbR)
 lldb.load("/path/to/binary")
 
 ### Break in main()
-lldb.break(symbol="main")
+lldb.breakfun(symbol="main")
 }
 
 }

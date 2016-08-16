@@ -16,6 +16,6 @@ An invisible return code.
 Continue process execution until the next breakpoint or exit.
 }
 \seealso{
-\code{\link{lldb.break}}
+\code{\link{lldb.breakline}}\code{\link{lldb.breakfun}}
 }
 
