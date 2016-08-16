@@ -150,6 +150,56 @@ int processcontinue(struct lldbcdata *data){
 	return 0;
 }
 
+int processstep(struct lldbcdata *data, const int method){
+	SBThread thread;
+	struct lldbcppdata cpp;
+	convertstruct(data,&cpp);
+
+	thread = cpp.process->GetSelectedThread();
+	if(!thread.IsValid())
+		return 1;
+
+	switch(method){
+		case STEP_OVER:
+			thread.StepOver();
+			break;
+		case STEP_INTO:
+			thread.StepInto();
+			break;
+		case STEP_OUT:
+			thread.StepOut();
+			break;
+		default:
+			return 5;
+	}
+
+	print_process_desc(&cpp);
+
+	return 0;
+}
+
+int processstepto(struct lldbcdata *data, const int frame, const char *file, const uint32_t line){
+	SBThread thread;
+	SBFrame frame0;
+	SBFileSpec filespec(file);
+	struct lldbcppdata cpp;
+	convertstruct(data,&cpp);
+
+	thread = cpp.process->GetSelectedThread();
+	if(!thread.IsValid())
+		return 1;
+
+	frame0 = thread.GetFrameAtIndex(frame);
+	if(!frame0.IsValid())
+		return 2;
+
+	thread.StepOverUntil(frame0,filespec,line); /* neat */
+
+	print_process_desc(&cpp);
+
+	return 0;
+}
+
 int setbreakpoint(struct lldbcdata *data, const struct breakargs *barg){
 	SBBreakpoint *br;
 	struct lldbcppdata cpp;

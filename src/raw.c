@@ -88,6 +88,50 @@ SEXP R_run_process(SEXP R_cdata, SEXP R_argv, SEXP R_argc){
 	return RET;
 }
 
+SEXP R_step(SEXP R_cdata, SEXP R_method){
+	char *m_str = CHARPT(R_method,0);
+	int method;
+	int retval;
+	SEXP RET;
+	struct lldbcdata *cdata = (struct lldbcdata*)getRptr(R_cdata);
+	CHECKPTR(cdata);
+
+	if(strcmp(m_str,"over")==0)
+		method=STEP_OVER;
+	else if(strcmp(m_str,"into")==0)
+		method=STEP_INTO;
+	else if(strcmp(m_str,"out")==0)
+		method=STEP_OUT;
+	else
+		return makerr();
+
+	retval = processstep(cdata,method);
+
+	PROTECT(RET = allocVector(INTSXP, 1));
+	INT(RET) = retval;
+	UNPROTECT(1);
+
+	return RET;
+}
+
+SEXP R_stepto(SEXP R_cdata, SEXP R_file, SEXP R_line){
+	char *file = CHARPT(R_file,0);
+	int line = INT(R_line);
+	int frame = 0;
+	int retval;
+	SEXP RET;
+	struct lldbcdata *cdata = (struct lldbcdata*)getRptr(R_cdata);
+	CHECKPTR(cdata);
+
+	retval = processstepto(cdata,frame,file,line);
+
+	PROTECT(RET = allocVector(INTSXP, 1));
+	INT(RET) = retval;
+	UNPROTECT(1);
+
+	return RET;
+}
+
 SEXP R_set_breakpoint(SEXP R_args){
 	int i;
 	int retval;
