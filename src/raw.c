@@ -15,7 +15,6 @@ extern "C" {
 #define CHECKPTR(ptr) if(ptr==NULL)error("invalid handler; pointer is NULL")
 
 static void cdata_finalize(SEXP ptr){
-	int i;
 	struct lldbcdata *cdata;
 	if (getRptr(ptr) == NULL)
 		return;
@@ -34,7 +33,6 @@ SEXP makerr(){
 
 SEXP R_load_process(SEXP R_args){
 	int retval;
-	SEXP RET;
 	SEXP cdata_ptr;
 	char *exename = CHARPT(R_args, 0);
 	struct lldbcdata *cdata;
@@ -135,7 +133,6 @@ SEXP R_stepto(SEXP R_cdata, SEXP R_file, SEXP R_line){
 SEXP R_set_breakpoint(SEXP R_args){
 	int i;
 	int retval;
-	int type;
 	const char *name;
 	struct breakargs barg;
 	SEXP el, RET;

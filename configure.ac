@@ -23,7 +23,15 @@
 # For more information, please refer to http://unlicense.org/
 ################################################################################
 
+AC_PREREQ([2.69])
 AC_INIT(DESCRIPTION)
+AC_PROG_CC_C99
+
+AC_CHECK_TYPE(
+  [__int128],
+  [],
+  [AC_MSG_ERROR([No compiler support for __int128])]
+)
 
 OBEXTRA="instclldb"
 
