@@ -1,8 +1,10 @@
 #######################################################
 
+LLDB_HOME = @LLDB_HOME@
+
+PKG_CPPFLAGS = -I$(LLDB_HOME)/include
 PKG_LIBS = @LLDBR_LIBS@
 OBEXTRA = @OBEXTRA@
-LLDB_HOME = @LLDB_HOME@
 
 LLDBOBJ = lldb/clldb.a
 ROBJ = raw.o lldbtypes.o
