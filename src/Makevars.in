@@ -3,6 +3,7 @@
 PKG_LIBS = @LLDBR_LIBS@
 OBEXTRA = @OBEXTRA@
 LLDB_HOME = @LLDB_HOME@
+MAKE = @MAKE@
 
 LLDBOBJ = lldb/clldb.a
 ROBJ = raw.o lldbtypes.o
@@ -16,7 +17,7 @@ $(OBJECTS): $(OBEXTRA)
 
 
 mkclldb:
-	( mkdir -p libs; cd lldb; gmake BUILD_DIR=../ LLDB_HOME=$(LLDB_HOME) LDB_LIBS=$(PKG_LIBS))
+	( mkdir -p libs; cd lldb; $(MAKE) BUILD_DIR=../ LLDB_HOME=$(LLDB_HOME) LDB_LIBS=$(PKG_LIBS))
 
 instclldb: mkclldb
 

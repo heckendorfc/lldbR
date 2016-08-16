@@ -35,6 +35,15 @@ AC_ARG_WITH(lldb-home,
 
 LLDBR_LIBS="-L${LLDB_HOME}/lib -llldb"
 
+UNAME=`uname`
+MAKE=make
+
+if test x$UNAME = xFreeBSD ; then
+MAKE=gmake
+fi
+
+AC_SUBST(MAKE)
+
 AC_SUBST(LLDB_HOME)
 AC_SUBST(LLDBR_LIBS)
 AC_SUBST(OBEXTRA)
