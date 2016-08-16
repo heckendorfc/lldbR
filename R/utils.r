@@ -72,3 +72,11 @@ check.is.posint <- function(x){
 	}
 	invisible(TRUE)
 }
+
+check.is.flag <- function(x){
+	if (!is.logical(x) || is.annoying(x)){
+		nm <- deparse(substitute(x))
+		stop(paste0("argument '", nm, "' must be TRUE or FALSE"), call.=FALSE)
+	}
+	invisible(TRUE)
+}

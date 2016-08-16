@@ -1,9 +1,11 @@
 #######################################################
 
-PKG_LIBS = @LLDBR_LIBS@
-OBEXTRA = @OBEXTRA@
 LLDB_HOME = @LLDB_HOME@
 MAKE = @MAKE@
+
+PKG_CPPFLAGS = -I$(LLDB_HOME)/include
+PKG_LIBS = @LLDBR_LIBS@
+OBEXTRA = @OBEXTRA@
 
 LLDBOBJ = lldb/clldb.a
 ROBJ = raw.o lldbtypes.o

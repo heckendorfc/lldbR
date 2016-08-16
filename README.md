@@ -3,17 +3,13 @@
 **lldbR** is an R package for using R as a debugger interface via the LLDB API.  It is not a debugger for R; it allows you to use R as a debugger for another program.  See the examples below for more information.
 
 
+
 ## Installation
 
-Currently some lldb paths are hard-coded and the package is hard to install on any machine that isn't mine. It'll be fixed in the future maybe.  Ignoring that...
+The package requires an installation of LLDB.  By default, the package will look for this in `/usr/local`. If your installation is elsewhere, you can specify it via the configure argument `--with-lldb-home`.  For example, on a recent version of Ubuntu, you might install it via:
 
-The development version is maintained on GitHub, and can (possibly) be installed by any of the packages that offer installations from GitHub:
-
-```r
-### Pick your preference
-devtools::install_github("heckendorfc/lldbR")
-ghit::install_github("heckendorfc/lldbR")
-remotes::install_github("heckendorfc/lldbR")
+```bash
+R CMD INSTALL lldbR_1.0.tar.gz --configure-args="--with-lldb-home='/usr/lib/llvm-3.8/'"
 ```
 
 
@@ -44,20 +40,20 @@ If we build this as usual with something like `clang -g -o test /tmp/test.c`, th
 
 ```r
 library(lldbR)
-handle <- lldb.load("/tmp/test")
-lldb.break(handle, "/tmp/test.c", 10)
-lldb.run(handle)
+lldb.load("/tmp/test")
+lldb.break("/tmp/test.c", 10)
+lldb.run()
 
-lldb.expr(handle, "x", 0)
+lldb.expr("x", 0)
 ## [1] 0
-lldb.expr(handle, "x", 1)
+lldb.expr("x", 1)
 ## [1] 15
 ```
 
 We can also do more interesting things, like take a histogram of the first 10 elements of the array:
 
 ```r
-vals <- lldb.expr(handle, "x", 0, 10)
+vals <- lldb.expr("x", 0, 10)
 hist(vals)
 ```
 

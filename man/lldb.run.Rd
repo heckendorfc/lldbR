@@ -4,12 +4,12 @@
 \alias{lldb.run}
 \title{lldb.run}
 \usage{
-lldb.run(handle, args = NULL)
+lldb.run(args = NULL, handle = NULL)
 }
 \arguments{
-\item{handle}{handle returned from lldb.load}
-
 \item{args}{command line arguments for the process or \code{NULL} (the default) for no arguments}
+
+\item{handle}{handle returned from \code{lldb.load()} or \code{NULL} for the default handle}
 }
 \value{
 An invisible return code.

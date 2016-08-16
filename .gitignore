@@ -4,4 +4,6 @@
 *.log
 *.status
 
+*.swp
+
 src/Makevars

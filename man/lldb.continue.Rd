@@ -4,10 +4,10 @@
 \alias{lldb.continue}
 \title{lldb.continue}
 \usage{
-lldb.continue(handle)
+lldb.continue(handle = NULL)
 }
 \arguments{
-\item{handle}{handle returned from lldb.load}
+\item{handle}{handle returned from \code{lldb.load()} or \code{NULL} for the default handle}
 }
 \value{
 An invisible return code.

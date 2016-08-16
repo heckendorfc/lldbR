@@ -2,10 +2,14 @@ Package: lldbR
 Type: Package
 Title: LLDB API R Wrapper
 Version: 1.0
+Imports:
+    utils
 SystemRequirements: GNU make
-Author: Christian Heckendorf (heckendorfc@gmail.com)
+Authors@R: c(person("Christian", "Heckendorf", role=c("aut", "cre"), email="heckendorfc@gmail.com"),
+    person("Drew", "Schmidt", role="ctb"))
 Maintainer: Christian Heckendorf <heckendorfc@gmail.com>
-Description: A collection of utilities that provide access to the LLDB API from within R.
+Description: A collection of utilities that provide access to the LLDB API from
+    within R.
 License: BSD 2-clause License + file LICENSE
 LazyData: yes
 LazyLoad: yes
