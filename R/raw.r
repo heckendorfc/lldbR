@@ -69,7 +69,7 @@ lldb.load <- function(args,setdefault=TRUE){
 #' lldb.break(file="/path/to/source.c", line=10)
 
 #' ### Break in main()
-#' lldb.break(handle, symbol="main")
+#' lldb.break(symbol="main")
 #' }
 #' 
 #' @seealso \code{\link{lldb.run}}

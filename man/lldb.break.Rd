@@ -32,7 +32,7 @@ lldb.load("/path/to/binary")
 ### Break at line 10 of the specified source file 
 lldb.break(file="/path/to/source.c", line=10)
 ### Break in main()
-lldb.break(handle, symbol="main")
+lldb.break(symbol="main")
 }
 
 }
