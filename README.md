@@ -24,10 +24,10 @@ ghit::install_github("heckendorfc/lldbR", configure.args=lldbhome)
 remotes::install_github("heckendorfc/lldbR", configure.args=lldbhome)
 ```
 
-Alternatively, you can download the latest [here](https://github.com/wrathematics/lldbR/archive/master.zip) and install it from the command line as follows:
+Alternatively, you can download the latest [here](https://github.com/heckendorfc/lldbR/archive/master.zip) and install it from the command line as follows:
 
 ```bash
-wget https://github.com/wrathematics/lldbR/archive/master.zip
+wget https://github.com/heckendorfc/lldbR/archive/master.zip
 unzip master
 R CMD build lldbR-master
 
