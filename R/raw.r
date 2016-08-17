@@ -13,7 +13,7 @@
 #' @return
 #' An object of class \code{lldb_handle}; an external pointer.
 #' 
-#' @seealso \code{\link{handles}}
+#' @seealso \code{\link{handles}, \link{lldb.exit}}
 #' 
 #' @examples
 #' \dontrun{
@@ -132,13 +132,38 @@ lldb.expr <- function(expr,offset=0,size=1,handle=NULL){
 	.Call(R_get_value,handle,expr,as.integer(offset),as.integer(size));
 }
 
-# intentionally not public
+#' lldb.exit
+#' 
+#' Halt the process, destroy the handle, and reset the default
+#' handle as necessary.
+#' 
+#' @details
+#' Strictly speaking, you do not need to call this function
+#' as it will be called automatically during garbage collection.
+#' However, if you wish to halt the attached process manually,
+#' this is the simplest way to do so.
+#' 
+#' @param handle
+#' handle returned from \code{lldb.load()} or \code{NULL} for the default handle
+#' 
+#' @examples
+#' \dontrun{
+#' library(lldbR)
+#' lldb.load("/path/to/binary")
+#' lldb.exit()
+#' }
+#' 
+#' @seealso \code{\link{handles}, \link{lldb.load}}
+#' 
+#' @export
 lldb.exit <- function(handle=NULL){
 	if(is.null(handle) || identical(handle,get.default.handle())){
-		handle <- acquire.handle(handle)
 		rm(handle)
-		assign.handle(NULL)
+		rm("handle", envir=lldb_state)
 	} else {
-		rm(handle)
+		rm(handle, envir=-2)
 	}
+	
+	invisible(gc())
+	invisible()
 }
