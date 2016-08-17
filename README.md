@@ -43,7 +43,7 @@ It just werkz.
 Because we can't have nice things, out of the box liblldb is not set up correctly. You'll need to link `liblldb.so` to the appropriate `liblldb-VERSION.so`.  Here's an example of what you might do:
 
 ```bash
-sudo apt-get install liblldb-3.8-dev
+sudo apt-get install lldb liblldb-3.8-dev
 sudo ln -f -s /usr/lib/x86_64-linux-gnu/liblldb-3.8.so /usr/lib/llvm-3.8/lib/liblldb.so
 ```
 
