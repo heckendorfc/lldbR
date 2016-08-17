@@ -135,10 +135,12 @@ lldb.expr <- function(expr,offset=0,size=1,handle=NULL){
 # intentionally not public
 lldb.exit <- function(handle=NULL){
 	if(is.null(handle) || identical(handle,get.default.handle())){
-		handle <- acquire.handle(handle)
 		rm(handle)
-		assign.handle(NULL)
+		rm("handle", envir=lldb_state)
 	} else {
-		rm(handle)
+		rm(handle, envir=-2)
 	}
+	
+	invisible(gc())
+	invisible()
 }
