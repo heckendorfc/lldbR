@@ -36,7 +36,7 @@ R CMD INSTALL lldbR_1.0.tar.gz --configure-args="--with-lldb-home='/PATH/TO/LLDB
 
 
 #### FreeBSD
-It just werkz.
+Install devel/llvm38 (or other version) with the LLDB knob enabled using ports or pkg. You may then follow the instructions above using `/usr/local/llvm38` for the lldb-home path.
 
 
 #### Ubuntu 16.04
