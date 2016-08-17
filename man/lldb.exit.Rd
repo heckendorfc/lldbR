@@ -28,6 +28,6 @@ lldb.exit()
 
 }
 \seealso{
-\code{\link{handles}, \link{lldb.exit}}
+\code{\link{handles}, \link{lldb.load}}
 }
 

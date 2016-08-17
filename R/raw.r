@@ -153,7 +153,7 @@ lldb.expr <- function(expr,offset=0,size=1,handle=NULL){
 #' lldb.exit()
 #' }
 #' 
-#' @seealso \code{\link{handles}, \link{lldb.exit}}
+#' @seealso \code{\link{handles}, \link{lldb.load}}
 #' 
 #' @export
 lldb.exit <- function(handle=NULL){
