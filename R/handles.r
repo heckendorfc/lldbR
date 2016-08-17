@@ -43,10 +43,15 @@ get.default.handle <- function(){
 	get("handle", envir=lldb_state)
 }
 
+# internal use
+assign.handle <- function(handle){
+	assign("handle", handle, envir=lldb_state)
+}
+
 #' @rdname handles
 #' @export
 set.default.handle <- function(handle){
 	check.is.handle(handle)
-	assign("handle", handle, envir=lldb_state)
+	assign.handle(handle)
 	invisible()
 }

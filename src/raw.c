@@ -20,6 +20,7 @@ static void cdata_finalize(SEXP ptr){
 		return;
 
 	cdata = (struct lldbcdata*)getRptr(ptr);
+	cleanup(cdata);
 	free(cdata);
 	R_ClearExternalPtr(ptr);
 }

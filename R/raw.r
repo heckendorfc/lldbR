@@ -131,3 +131,14 @@ lldb.expr <- function(expr,offset=0,size=1,handle=NULL){
 	handle <- acquire.handle(handle)
 	.Call(R_get_value,handle,expr,as.integer(offset),as.integer(size));
 }
+
+# intentionally not public
+lldb.exit <- function(handle=NULL){
+	if(is.null(handle) || identical(handle,get.default.handle())){
+		handle <- acquire.handle(handle)
+		rm(handle)
+		assign.handle(NULL)
+	} else {
+		rm(handle)
+	}
+}

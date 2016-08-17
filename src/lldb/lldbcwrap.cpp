@@ -16,6 +16,7 @@ struct lldbcppdata{
 
 #define convlang(class,elem) if(c->elem) cpp->elem = static_cast<class*>(c->elem); else cpp->elem = NULL
 static void convertstruct(struct lldbcdata *c, struct lldbcppdata *cpp){
+	memset(cpp,0,sizeof(*cpp));
 	convlang(SBDebugger,debugger);
 	convlang(SBTarget,target);
 	convlang(SBProcess,process);
@@ -227,7 +228,7 @@ int processstepto(struct lldbcdata *data, const int frame, const char *file, con
 }
 
 int setbreakpoint(struct lldbcdata *data, const struct breakargs *barg){
-	SBBreakpoint *br;
+	SBBreakpoint br;
 	struct lldbcppdata cpp;
 
 	if(data == NULL)
@@ -237,13 +238,13 @@ int setbreakpoint(struct lldbcdata *data, const struct breakargs *barg){
 	if(cpp.target == NULL)
 		return 1;
 	if(barg->file && barg->line>0)
-		br = new SBBreakpoint(cpp.target->BreakpointCreateByLocation(barg->file,barg->line));
+		br = SBBreakpoint(cpp.target->BreakpointCreateByLocation(barg->file,barg->line));
 	else if(barg->symbol)
-		br = new SBBreakpoint(cpp.target->BreakpointCreateByName(barg->symbol,barg->module));
+		br = SBBreakpoint(cpp.target->BreakpointCreateByName(barg->symbol,barg->module));
 	else
 		return 1;
 
-	if(!br->IsValid())
+	if(!br.IsValid())
 		return 1;
 
 	return 0;
@@ -296,6 +297,7 @@ int lldbinit(struct lldbcdata *data){
 	return 0;
 }
 
+#define deleteif(x) if(cpp.x)delete cpp.x
 void cleanup(struct lldbcdata *data){
 	struct lldbcppdata cpp;
 
