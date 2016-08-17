@@ -283,8 +283,6 @@ int lldbinit(struct lldbcdata *data){
 	if(data == NULL)
 		return 1;
 
-	SBDebugger::Initialize();
-
 	debugger = new SBDebugger(SBDebugger::Create());
 	debugger->SetAsync(false);
 
@@ -299,5 +297,22 @@ int lldbinit(struct lldbcdata *data){
 }
 
 void cleanup(struct lldbcdata *data){
+	struct lldbcppdata cpp;
+
+	if(data == NULL)
+		return;
+
+	convertstruct(data,&cpp);
+
+	deleteif(process);
+	deleteif(target);
+	deleteif(debugger);
+}
+
+void lldbstartup(){
+	SBDebugger::Initialize();
+}
+
+void lldbshutdown(){
 	SBDebugger::Terminate();
 }

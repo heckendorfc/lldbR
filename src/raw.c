@@ -207,6 +207,18 @@ SEXP R_get_value(SEXP R_cdata, SEXP R_expr, SEXP R_start, SEXP R_size){
 	return RET;
 }
 
+SEXP R_lldb_startup(SEXP ptr){
+	lldbstartup();
+
+	return allocVector(NILSXP, 1);
+}
+
+SEXP R_lldb_shutdown(SEXP ptr){
+	lldbshutdown();
+
+	return allocVector(NILSXP, 1);
+}
+
 #ifdef __cplusplus
 }
 #endif

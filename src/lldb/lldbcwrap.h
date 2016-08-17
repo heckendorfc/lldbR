@@ -38,6 +38,8 @@ int setbreakpoint(struct lldbcdata *data, const struct breakargs *barg);
 int initprocess(struct lldbcdata *data, const char *exe_file_path);
 int lldbinit(struct lldbcdata *data);
 void cleanup(struct lldbcdata *data);
+void lldbstartup();
+void lldbshutdown();
 
 #ifdef __cplusplus
 }
