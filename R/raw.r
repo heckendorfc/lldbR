@@ -96,12 +96,19 @@ lldb.continue <- function(handle=NULL){
 #' 
 #' Extract data from the process into R via an expression.
 #' 
+#' Expressions containing the special sequence "$$" will iterate over array at
+#' that position. This allows for extraction of child elements in an array of
+#' structs.
+#' 
 #' @param expr
 #' expression to evaluate
 #' @param offset
 #' offset index to read from
 #' @param size
 #' number of elements to read
+#' @param fixed
+#' if true, the expr parameter is a fixed string and should not be evaluated
+#' for special sequences
 #' @param handle
 #' handle returned from \code{lldb.load()} or \code{NULL} for the default handle
 #' 
@@ -121,15 +128,29 @@ lldb.continue <- function(handle=NULL){
 #' lldb.expr("x")
 #' ### Extract x[2] to x[4]
 #' lldb.expr("x", 2, 3)
+#' ### Extract y[2].start to y[4].start
+#' lldb.expr("y[$$].start", 2, 3, fixed=FALSE)
 #' }
 #' 
 #' @export
-lldb.expr <- function(expr,offset=0,size=1,handle=NULL){
+lldb.expr <- function(expr,offset=0,size=1,fixed=TRUE,handle=NULL){
 	check.is.string(expr)
 	check.is.natnum(offset)
 	check.is.posint(size)
+	check.is.flag(fixed)
 	handle <- acquire.handle(handle)
-	.Call(R_get_value,handle,expr,as.integer(offset),as.integer(size));
+
+	if(!fixed){
+		spexpr <- strsplit(expr,"$$",fixed=TRUE)[[1]]
+		if(length(spexpr)>2)
+			stop("only one instance of '$$' may be present in expr")
+
+		sapply(0:(size-1), FUN=function(ind) {
+			.Call(R_get_value, handle, paste0(spexpr,collapse=as.character(offset+ind)), 0L, 1L)
+		})
+	} else {
+		.Call(R_get_value,handle,expr,as.integer(offset),as.integer(size));
+	}
 }
 
 #' lldb.exit

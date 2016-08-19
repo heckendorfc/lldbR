@@ -4,7 +4,7 @@
 \alias{lldb.expr}
 \title{lldb.expr}
 \usage{
-lldb.expr(expr, offset = 0, size = 1, handle = NULL)
+lldb.expr(expr, offset = 0, size = 1, fixed = TRUE, handle = NULL)
 }
 \arguments{
 \item{expr}{expression to evaluate}
@@ -13,6 +13,9 @@ lldb.expr(expr, offset = 0, size = 1, handle = NULL)
 
 \item{size}{number of elements to read}
 
+\item{fixed}{if true, the expr parameter is a fixed string and should not be evaluated
+for special sequences}
+
 \item{handle}{handle returned from \code{lldb.load()} or \code{NULL} for the default handle}
 }
 \value{
@@ -20,6 +23,11 @@ The requested data.
 }
 \description{
 Extract data from the process into R via an expression.
+}
+\details{
+Expressions containing the special sequence "$$" will iterate over array at
+that position. This allows for extraction of child elements in an array of
+structs.
 }
 \examples{
 \dontrun{
@@ -34,6 +42,8 @@ lldb.run()
 lldb.expr("x")
 ### Extract x[2] to x[4]
 lldb.expr("x", 2, 3)
+### Extract y[2].start to y[4].start
+lldb.expr("y[$$].start", 2, 3, fixed=FALSE)
 }
 
 }
