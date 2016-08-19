@@ -98,13 +98,13 @@ chartconv(9,int,RTYPE_CHAR) // eBasicTypeChar32
 tconv(10,short,RTYPE_INT) // eBasicTypeShort
 tconv(11,unsigned short,RTYPE_INT) // eBasicTypeUnsignedShort
 tconv(12,int,RTYPE_INT) // eBasicTypeInt
-tconv(13,unsigned int,RTYPE_INT) // eBasicTypeUnsignedInt
-tconv(14,long,RTYPE_INT) // eBasicTypeLong
-tconv(15,unsigned long,RTYPE_INT) // eBasicTypeUnsignedLong
-tconv(16,long long,RTYPE_INT) // eBasicTypeLongLong
-tconv(17,unsigned long long,RTYPE_INT) // eBasicTypeUnsignedLongLong
-tconv(18,__int128,RTYPE_INT) // eBasicTypeInt128
-tconv(19,unsigned __int128,RTYPE_INT) // eBasicTypeUnsignedInt128
+tconv(13,unsigned int,RTYPE_NUM) // eBasicTypeUnsignedInt
+tconv(14,long,RTYPE_NUM) // eBasicTypeLong
+tconv(15,unsigned long,RTYPE_NUM) // eBasicTypeUnsignedLong
+tconv(16,long long,RTYPE_NUM) // eBasicTypeLongLong
+tconv(17,unsigned long long,RTYPE_NUM) // eBasicTypeUnsignedLongLong
+//tconv(18,__int128,RTYPE_NUM) // eBasicTypeInt128
+//tconv(19,unsigned __int128,RTYPE_NUM) // eBasicTypeUnsignedInt128
 tconv(20,bool,RTYPE_LGL) // eBasicTypeBool
 
 //tconv(21,void,RTYPE_NULL) // eBasicTypeHalf
@@ -126,7 +126,7 @@ cpxtconv(27,long double complex,l,RTYPE_CPX) // eBasicTypeLongDoubleComplex
 
 static typefun funlook[] = {
 	NULL, NULL, conv2, conv3, conv4, conv5, conv6, conv7, conv8, conv9,
-	conv10, conv11, conv12, conv13, conv14, conv15, conv16, conv17, conv18, conv19,
+	conv10, conv11, conv12, conv13, conv14, conv15, conv16, conv17, NULL, NULL,
 	conv20, NULL, conv22, conv23, conv24, conv25, conv26, conv27, NULL, NULL, NULL, NULL, NULL}; // convNULL 0:1, 28:32
 
 SEXP make_r_type(void *data, size_t size, int lldbtype){
