@@ -32,9 +32,10 @@ SEXP makerr(){
 	return RET;
 }
 
-SEXP R_load_process(SEXP R_args){
+SEXP R_load_process(SEXP R_quiet, SEXP R_args){
 	int retval;
 	SEXP cdata_ptr;
+	int quiet = LOGICAL(R_quiet)[0];
 	char *exename = CHARPT(R_args, 0);
 	struct lldbcdata *cdata;
 
@@ -47,7 +48,10 @@ SEXP R_load_process(SEXP R_args){
 	if((retval = lldbinit(cdata)))
 		goto err;
 
-	cdata->print=Rprintf;
+	if(quiet)
+		cdata->print=NULL;
+	else
+		cdata->print=Rprintf;
 
 	if((retval = initprocess(cdata,exename)))
 		goto err;

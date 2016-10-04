@@ -4,7 +4,7 @@
 \alias{lldb.load}
 \title{lldb.load}
 \usage{
-lldb.load(args, setdefault = TRUE)
+lldb.load(args, quiet = FALSE, setdefault = TRUE)
 }
 \arguments{
 \item{args}{process name}

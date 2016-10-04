@@ -31,10 +31,10 @@
 #' }
 #' 
 #' @export
-lldb.load <- function(args,setdefault=TRUE){
+lldb.load <- function(args,quiet=FALSE,setdefault=TRUE){
 	check.is.string(args)
 	check.is.flag(setdefault)
-	ret <- .Call(R_load_process,args);
+	ret <- .Call(R_load_process,quiet,args);
 	class(ret) <- "lldb_handle"
 	if (setdefault){
 		set.default.handle(ret)
