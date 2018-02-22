@@ -67,6 +67,8 @@ int extract_array(void *val, void **dst, int *dstsize, int index, int size){
 		return -7;
 	dat.ReadRawData(error,0,*dst,*dstsize);
 
+	if(type.IsTypedefType())
+		return type.GetTypedefedType().GetBasicType();
 	return type.GetBasicType();
 }
 
@@ -88,6 +90,8 @@ int extract_scalar(void *val, void **dst, int *dstsize, int index, int size){
 	*dst=malloc(*dstsize);
 	dat.ReadRawData(error,0,*dst,*dstsize);
 
+	if(type.IsTypedefType())
+		return type.GetTypedefedType().GetBasicType();
 	return type.GetBasicType();
 }
 
