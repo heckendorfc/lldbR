@@ -166,6 +166,8 @@ SEXP R_set_breakpoint(SEXP R_args){
 			barg.module = CHARPT(el,0);
 		else if(strcmp(name,"symbol")==0 && TYPEOF(el)==STRSXP)
 			barg.symbol = CHARPT(el,0);
+		else if(strcmp(name,"condition")==0 && TYPEOF(el)==STRSXP)
+			barg.condition = CHARPT(el,0);
 	}
 
 	retval = setbreakpoint(cdata,&barg);

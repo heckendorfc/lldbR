@@ -19,6 +19,7 @@ struct breakargs{
 	uint32_t line;
 	char *symbol;
 	char *module;
+	char *condition;
 };
 
 enum stepmethod{

@@ -6,9 +6,10 @@
 \alias{lldb.breakline}
 \title{Set breakpoints}
 \usage{
-lldb.breakline(file = NULL, line = 0, handle = NULL)
+lldb.breakline(file = NULL, line = 0, handle = NULL, condition = NULL)
 
-lldb.breakfun(symbol = NULL, module = NULL, handle = NULL)
+lldb.breakfun(symbol = NULL, module = NULL, handle = NULL,
+  condition = NULL)
 }
 \arguments{
 \item{file}{source file to break in}
@@ -16,6 +17,8 @@ lldb.breakfun(symbol = NULL, module = NULL, handle = NULL)
 \item{line}{line number to break at}
 
 \item{handle}{handle returned from \code{lldb.load()} or \code{NULL} for the default handle}
+
+\item{condition}{the breakpoint stops only if the condition expression evaluates to true.}
 
 \item{symbol}{symbol (function) to break in}
 

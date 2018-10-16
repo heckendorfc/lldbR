@@ -12,6 +12,8 @@
 #' module to search for symbol
 #' @param handle
 #' handle returned from \code{lldb.load()} or \code{NULL} for the default handle
+#' @param condition
+#' the breakpoint stops only if the condition expression evaluates to true.
 #'
 #' @return
 #' An invisible return code.
@@ -37,12 +39,12 @@ NULL
 #' 
 #' @rdname lldb.break
 #' @export lldb.breakline
-lldb.breakline <- function(file=NULL,line=0,handle=NULL){
+lldb.breakline <- function(file=NULL,line=0,handle=NULL,condition=NULL){
 	check.is.string.or.null(file)
 	check.is.posint(line)
 	handle <- acquire.handle(handle)
 
-	ret <- .External(R_set_breakpoint,handle=handle,file=file,line=as.integer(line));
+	ret <- .External(R_set_breakpoint,handle=handle,file=file,line=as.integer(line),condition=condition);
 	if (ret != 0){
 		stop(paste("operation completed unsuccessfully: returned error code", ret))
 	}
@@ -54,12 +56,12 @@ lldb.breakline <- function(file=NULL,line=0,handle=NULL){
 #' 
 #' @rdname lldb.break
 #' @export lldb.breakfun
-lldb.breakfun <- function(symbol=NULL,module=NULL,handle=NULL){
+lldb.breakfun <- function(symbol=NULL,module=NULL,handle=NULL,condition=NULL){
 	check.is.string.or.null(symbol)
 	check.is.string.or.null(module)
 	handle <- acquire.handle(handle)
 
-	ret <- .External(R_set_breakpoint,handle=handle,symbol=symbol,module=module);
+	ret <- .External(R_set_breakpoint,handle=handle,symbol=symbol,module=module,condition=condition);
 	if (ret != 0){
 		stop(paste("operation completed unsuccessfully: returned error code", ret))
 	}

@@ -251,6 +251,9 @@ int setbreakpoint(struct lldbcdata *data, const struct breakargs *barg){
 	if(!br.IsValid())
 		return 1;
 
+	if(barg->condition)
+		br.SetCondition(barg->condition);
+
 	return 0;
 }
 
