@@ -13,15 +13,14 @@ The package requires an installation of LLDB.  By default, the package will look
 You can install the package from R using any of the packages which can install from GitHub (provided you set `lldbhome` appropraitely; see below for examples)
 
 ```r
-### Set lldb home
 lldbhome <- "--with-lldb-home='/PATH/TO/LLDB'"
-
-### Pick your preference - you only need to run one of these 3
-devtools::install_github("heckendorfc/lldbR", args=paste0("--configure-args=\"", lldbhome, "\""))
-
-ghit::install_github("heckendorfc/lldbR", configure.args=lldbhome)
-
 remotes::install_github("heckendorfc/lldbR", configure.args=lldbhome)
+```
+
+Stable releases are published on the [hpcran](https://hpcran.org). You can install them via
+
+```r
+install.packages("fmlr", configure.args=lldbhome, repos=c("https://hpcran.org", "https://cran.rstudio.com"))
 ```
 
 Alternatively, you can download the latest [here](https://github.com/heckendorfc/lldbR/archive/master.zip) and install it from the command line as follows:
