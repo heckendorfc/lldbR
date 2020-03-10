@@ -18,4 +18,3 @@ Continue process execution until the next breakpoint or exit.
 \seealso{
 \code{\link{lldb.breakline}}\code{\link{lldb.breakfun}}
 }
-

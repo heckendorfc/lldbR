@@ -4,7 +4,7 @@ Title: LLDB API R Wrapper
 Version: 1.0
 Imports:
     utils
-SystemRequirements: GNU make
+SystemRequirements: GNU make, liblldb
 Authors@R: c(person("Christian", "Heckendorf", role=c("aut", "cre"), email="heckendorfc@gmail.com"),
     person("Drew", "Schmidt", role="ctb"))
 Maintainer: Christian Heckendorf <heckendorfc@gmail.com>
@@ -17,4 +17,4 @@ ByteCompile: yes
 NeedsCompilation: yes
 URL: https://github.com/heckendorfc/lldbR
 BugReports: https://github.com/heckendorfc/lldbR/issues
-RoxygenNote: 5.0.1
+RoxygenNote: 6.1.1

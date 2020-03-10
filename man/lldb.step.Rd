@@ -23,9 +23,4 @@ An invisible return code.
 }
 \description{
 Continue process execution until the next line
-
-lldb.step steps either 'into', 'out' of, or 'over' a function or line
-
-lldb.stepto steps until reaching the specified line
 }
-

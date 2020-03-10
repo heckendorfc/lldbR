@@ -39,4 +39,3 @@ identical(handle2, get.default.handle()) # TRUE
 \seealso{
 \code{\link{handles}, \link{lldb.exit}}
 }
-

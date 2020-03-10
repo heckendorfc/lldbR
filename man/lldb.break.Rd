@@ -2,11 +2,12 @@
 % Please edit documentation in R/break.r
 \name{lldb.break}
 \alias{lldb.break}
-\alias{lldb.breakfun}
 \alias{lldb.breakline}
+\alias{lldb.breakfun}
 \title{Set breakpoints}
 \usage{
-lldb.breakline(file = NULL, line = 0, handle = NULL, condition = NULL)
+lldb.breakline(file = NULL, line = 0, handle = NULL,
+  condition = NULL)
 
 lldb.breakfun(symbol = NULL, module = NULL, handle = NULL,
   condition = NULL)
@@ -29,10 +30,6 @@ An invisible return code.
 }
 \description{
 Stop execution at certain posititions in the source
-
-lldb.breakline sets a breakpoint at the specified line
-
-lldb.breakfun sets a breakpoint at the specified symbol
 }
 \examples{
 \dontrun{
@@ -50,4 +47,3 @@ lldb.breakfun(symbol="main")
 \seealso{
 \code{\link{lldb.run}}
 }
-

@@ -1,3 +1,14 @@
+load_unchecked <- function(args,quiet=FALSE,setdefault=TRUE){
+	ret <- .Call(R_load_process,quiet,args);
+	if(is.null(ret))
+		stop(paste0("Error loading process"))
+	class(ret) <- "lldb_handle"
+	if (setdefault){
+		set.default.handle(ret)
+	}
+	ret
+}
+
 #' lldb.load
 #' 
 #' The initializer that creates a "handle" for lldb.
@@ -34,13 +45,7 @@
 lldb.load <- function(args,quiet=FALSE,setdefault=TRUE){
 	check.is.string(args)
 	check.is.flag(setdefault)
-	ret <- .Call(R_load_process,quiet,args);
-	if(is.null(ret))
-		stop(paste0("Error loading process: ",args))
-	class(ret) <- "lldb_handle"
-	if (setdefault){
-		set.default.handle(ret)
-	}
+	ret <- load_unchecked(args,quiet,setdefault)
 	invisible(ret)
 }
 
@@ -70,6 +75,32 @@ lldb.run <- function(args=NULL,handle=NULL){
 		stop(paste("operation completed unsuccessfully: returned error code", ret))
 	}
 	invisible(ret)
+}
+
+#' lldb.attach
+#' 
+#' Attaches the debugger to an existing process. This would replace a call to lldb.load().
+#' 
+#' @param pid
+#' the PID of the process
+#' @param setdefault
+#' if \code{TRUE}, then the default handle will be updated with the return.
+#' 
+#' @return
+#' An object of class \code{lldb_handle}; an external pointer.
+#' 
+#' @seealso \code{\link{lldb.breakfun}} \code{\link{lldb.breakline}} \code{\link{lldb.load}}
+#' 
+#' @export
+lldb.attach <- function(pid=NULL,quiet=FALSE,setdefault=TRUE){
+	if (!is.integer(pid))
+		stop("pid must be of class 'integer'")
+	handle <- load_unchecked(NULL,quiet,setdefault)
+	ret <- .Call(R_attach_process,handle,pid[1]);
+	if (ret != 0){
+		stop(paste("operation completed unsuccessfully: returned error code", ret))
+	}
+	invisible(handle)
 }
 
 #' lldb.continue

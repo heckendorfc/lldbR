@@ -36,7 +36,7 @@ SEXP R_load_process(SEXP R_quiet, SEXP R_args){
 	int retval;
 	SEXP cdata_ptr;
 	int quiet = LOGICAL(R_quiet)[0];
-	char *exename = CHARPT(R_args, 0);
+	char *exename = NULL;
 	struct lldbcdata *cdata;
 
 	cdata=malloc(sizeof(*cdata));
@@ -53,6 +53,9 @@ SEXP R_load_process(SEXP R_quiet, SEXP R_args){
 	else
 		cdata->print=Rprintf;
 
+	if(isString(R_args))
+		exename = CHARPT(R_args, 0);
+
 	if((retval = initprocess(cdata,exename)))
 		goto err;
 
@@ -63,6 +66,23 @@ SEXP R_load_process(SEXP R_quiet, SEXP R_args){
 err:
 	UNPROTECT(1);
 	return makerr();
+}
+
+SEXP R_attach_process(SEXP R_cdata, SEXP R_pid){
+	int retval;
+	int i;
+	int pid = INT(R_pid);
+	SEXP RET;
+	struct lldbcdata *cdata = (struct lldbcdata*)getRptr(R_cdata);
+	CHECKPTR(cdata);
+
+	retval = attachprocess(cdata,pid);
+
+	PROTECT(RET = allocVector(INTSXP, 1));
+	INT(RET) = retval;
+	UNPROTECT(1);
+
+	return RET;
 }
 
 SEXP R_run_process(SEXP R_cdata, SEXP R_argv, SEXP R_argc){

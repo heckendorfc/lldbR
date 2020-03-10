@@ -15,4 +15,3 @@ LLDB API R wrapper
 Christian Heckendorf \email{heckendorfc@gmail.com}
 }
 \keyword{package}
-

@@ -31,6 +31,7 @@ enum stepmethod{
 int extract_array(void *val, void **dst, int *dstsize, int index, int size);
 int extract_scalar(void *val, void **dst, int *dstsize, int index, int size);
 int getvalue(struct lldbcdata *data, const int frame, const char *varname, void **dst, int *dstsize, int index, int size, int(*datextract)(void*,void**,int*,int,int));
+int attachprocess(struct lldbcdata *data, const int pid);
 int startprocess(struct lldbcdata *data, const char **args);
 int processcontinue(struct lldbcdata *data);
 int processstep(struct lldbcdata *data, const int method);

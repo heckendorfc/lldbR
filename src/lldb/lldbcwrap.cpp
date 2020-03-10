@@ -124,6 +124,41 @@ int getvalue(struct lldbcdata *data, const int frame, const char *varname, void 
 	return datextract(&val,dst,dstsize,index,size);
 }
 
+int attachprocess(struct lldbcdata *data, const int pid){
+	char errstr[MAXPATHLEN];
+	SBProcess *process;
+	SBError err;
+	SBListener lis;
+	struct lldbcppdata cpp;
+	SBAttachInfo ai(pid);
+
+	if(data == NULL)
+		return 1;
+	convertstruct(data,&cpp);
+
+	if(cpp.target == NULL || !cpp.target->IsValid())
+		return 1;
+
+	if(lis.IsValid())
+		return 2;
+
+	if(cpp.process)
+		cpp.process->Destroy();
+
+	process = new SBProcess(cpp.target->Attach(ai,err));
+	if(process->GetProcessID()==LLDB_INVALID_PROCESS_ID){
+		fprintf(stderr,"error attaching to %d: \"%s\"\n",pid,err.GetCString());
+		return 3;
+	}
+
+	data->process = process;
+	cpp.process = process;
+
+	print_process_desc(&cpp);
+
+	return 0;
+}
+
 int startprocess(struct lldbcdata *data, const char **args){
 	char pwd[MAXPATHLEN];
 	SBProcess *process;
@@ -261,7 +296,7 @@ int initprocess(struct lldbcdata *data, const char *exe_file_path){
 	bool verbose = false;
 	const char *arch = NULL;
 	const char *platform = NULL;
-	const bool add_dependent_libs = false;
+	const bool add_dependent_libs = true;
 	SBError error;
 	SBTarget *target;
 	struct lldbcppdata cpp;
@@ -269,6 +304,9 @@ int initprocess(struct lldbcdata *data, const char *exe_file_path){
 	if(data == NULL)
 		return 1;
 	convertstruct(data,&cpp);
+
+	if(cpp.target)
+		delete cpp.target;
 
 	if(cpp.debugger == NULL)
 		return 1;
